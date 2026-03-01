@@ -2,53 +2,632 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Galaxy Coming Soon</title>
+<title>Neon 60 Mini Games - By Yash Kumar</title>
 
 <style>
 body{
     margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    overflow:hidden;
-    color:white;
-    font-family:sans-serif;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);
+    background-size:400% 400%;
+    animation: neonBG 12s ease infinite;
+    padding:40px;
 }
 
-/* stars */
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:url("https://www.transparenttextures.com/patterns/stardust.png");
-    animation: move 60s linear infinite;
-}
-
-@keyframes move{
-    from{transform:translate(0,0);}
-    to{transform:translate(-1000px,-1000px);}
+@keyframes neonBG{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
 h1{
-    font-size:70px;
-    letter-spacing:10px;
     text-align:center;
-    animation: glow 3s infinite alternate;
+    color:#00f7ff;
+    font-size:38px;
+    text-shadow:0 0 10px #00f7ff,
+                0 0 20px #00f7ff,
+                0 0 40px #00f7ff;
+    margin-bottom:50px;
 }
 
-@keyframes glow{
-    from{text-shadow:0 0 20px cyan;}
-    to{text-shadow:0 0 60px magenta;}
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:25px;
+    max-width:1500px;
+    margin:auto;
+}
+
+.game-link{
+    text-decoration:none;
+}
+
+.card{
+    background:rgba(0,0,0,0.7);
+    border:2px solid #00f7ff;
+    border-radius:15px;
+    padding:15px;
+    text-align:center;
+    transition:0.4s;
+    box-shadow:0 0 10px #00f7ff;
+}
+
+.card:hover{
+    transform:translateY(-8px) scale(1.03);
+    box-shadow:0 0 20px #00f7ff,
+               0 0 40px #00f7ff,
+               0 0 60px #00f7ff;
+}
+
+.card img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:10px;
+    border:2px solid #ff00ff;
+    box-shadow:0 0 15px #ff00ff;
+}
+
+.card h3{
+    margin:12px 0 6px;
+    color:#00f7ff;
+    font-size:16px;
+    text-shadow:0 0 8px #00f7ff;
+}
+
+.card p{
+    font-size:13px;
+    color:#ffffff;
+    opacity:0.85;
 }
 </style>
 </head>
 
 <body>
 
-<h1>COMING SOON</h1>
+<h1>🎮Mini Games🎮</h1>
+
+<div class="container">
+
+<!-- GAME 1 -->
+<a href="1.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game1.jpg">
+<h3>Game 1</h3>
+<p>Exciting action gameplay with challenging levels.</p>
+</div>
+</a>
+
+<!-- GAME 2 -->
+<a href="2.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game2.jpg">
+<h3>Game 2</h3>
+<p>Fun adventure game full of surprises and thrills.</p>
+</div>
+</a>
+
+<!-- GAME 3 -->
+<a href="3.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game3.jpg">
+<h3>Game 3</h3>
+<p>Fast-paced arcade style challenge for gamers.</p>
+</div>
+</a>
+
+<!-- GAME 4 -->
+<a href="4.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game4.jpg">
+<h3>Game 4</h3>
+<p>Strategic puzzle experience with fun mechanics.</p>
+</div>
+</a>
+
+<!-- GAME 5 -->
+<a href="5.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game5.jpg">
+<h3>Game 5</h3>
+<p>Competitive racing game with exciting tracks.</p>
+</div>
+</a>
+
+<!-- GAME 6 -->
+<a href="6.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game6.jpg">
+<h3>Game 6</h3>
+<p>Classic shooting game with intense missions.</p>
+</div>
+</a>
+
+<!-- GAME 7 -->
+<a href="7.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game7.jpg">
+<h3>Game 7</h3>
+<p>Creative sandbox game for endless imagination.</p>
+</div>
+</a>
+
+<!-- GAME 8 -->
+<a href="8.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game8.jpg">
+<h3>Game 8</h3>
+<p>Multiplayer battle arena with real competition.</p>
+</div>
+</a>
+
+<!-- GAME 9 -->
+<a href="9.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game9.jpg">
+<h3>Game 9</h3>
+<p>Retro pixel adventure with nostalgic feel.</p>
+</div>
+</a>
+
+<!-- GAME 10 -->
+<a href="10.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game10.jpg">
+<h3>Game 10</h3>
+<p>Thrilling survival game full of challenges.</p>
+</div>
+</a>
+
+<!-- GAME 11 -->
+<a href="11.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game11.jpg">
+<h3>Game 11</h3>
+<p>High-speed racing challenge with powerful vehicles.</p>
+</div>
+</a>
+
+<!-- GAME 12 -->
+<a href="12.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game12.jpg">
+<h3>Game 12</h3>
+<p>Action-packed shooter with intense combat missions.</p>
+</div>
+</a>
+
+<!-- GAME 13 -->
+<a href="13.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game13.jpg">
+<h3>Game 13</h3>
+<p>Brain-teasing puzzle game to test your logic skills.</p>
+</div>
+</a>
+
+<!-- GAME 14 -->
+<a href="14.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game14.jpg">
+<h3>Game 14</h3>
+<p>Fantasy adventure in a magical open world.</p>
+</div>
+</a>
+
+<!-- GAME 15 -->
+<a href="15.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game15.jpg">
+<h3>Game 15</h3>
+<p>Multiplayer strategy game with competitive gameplay.</p>
+</div>
+</a>
+
+<!-- GAME 16 -->
+<a href="16.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game16.jpg">
+<h3>Game 16</h3>
+<p>Retro arcade fun with modern neon graphics.</p>
+</div>
+</a>
+
+<!-- GAME 17 -->
+<a href="17.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game17.jpg">
+<h3>Game 17</h3>
+<p>Thrilling survival quest in a dangerous environment.</p>
+</div>
+</a>
+
+<!-- GAME 18 -->
+<a href="18.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game18.jpg">
+<h3>Game 18</h3>
+<p>Fast reflex game that tests your timing skills.</p>
+</div>
+</a>
+
+<!-- GAME 19 -->
+<a href="19.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game19.jpg">
+<h3>Game 19</h3>
+<p>Creative building simulator with endless possibilities.</p>
+</div>
+</a>
+
+<!-- GAME 20 -->
+<a href="20.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game20.jpg">
+<h3>Game 20</h3>
+<p>Adventure puzzle journey across mysterious lands.</p>
+</div>
+</a>
+
+<!-- GAME 21 -->
+<a href="21.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game21.jpg">
+<h3>Game 21</h3>
+<p>Classic platformer with exciting levels and bosses.</p>
+</div>
+</a>
+
+<!-- GAME 22 -->
+<a href="22.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game22.jpg">
+<h3>Game 22</h3>
+<p>Challenging maze runner with increasing difficulty.</p>
+</div>
+</a>
+
+<!-- GAME 23 -->
+<a href="23.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game23.jpg">
+<h3>Game 23</h3>
+<p>Competitive sports simulation with realistic gameplay.</p>
+</div>
+</a>
+
+<!-- GAME 24 -->
+<a href="24.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game24.jpg">
+<h3>Game 24</h3>
+<p>Exciting zombie survival with thrilling missions.</p>
+</div>
+</a>
+
+<!-- GAME 25 -->
+<a href="25.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game25.jpg">
+<h3>Game 25</h3>
+<p>Open-world exploration packed with adventures.</p>
+</div>
+</a>
+
+<!-- GAME 26 -->
+<a href="26.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game26.jpg">
+<h3>Game 26</h3>
+<p>Stealth-based action game with smart missions.</p>
+</div>
+</a>
+
+<!-- GAME 27 -->
+<a href="27.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game27.jpg">
+<h3>Game 27</h3>
+<p>High-energy battle royale with intense action.</p>
+</div>
+</a>
+
+<!-- GAME 28 -->
+<a href="28.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game28.jpg">
+<h3>Game 28</h3>
+<p>Relaxing simulation game with creative features.</p>
+</div>
+</a>
+
+<!-- GAME 29 -->
+<a href="29.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game29.jpg">
+<h3>Game 29</h3>
+<p>Hardcore combat game with epic boss fights.</p>
+</div>
+</a>
+
+<!-- GAME 30 -->
+<a href="30.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game30.jpg">
+<h3>Game 30</h3>
+<p>Interactive story-based game with multiple endings.</p>
+</div>
+</a>
+
+<!-- GAME 31 -->
+<a href="31.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game31.jpg">
+<h3>Game 31</h3>
+<p>Space adventure shooter set in a futuristic galaxy.</p>
+</div>
+</a>
+
+<!-- GAME 32 -->
+<a href="32.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game32.jpg">
+<h3>Game 32</h3>
+<p>Classic fighting game with powerful characters.</p>
+</div>
+</a>
+
+<!-- GAME 33 -->
+<a href="33.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game33.jpg">
+<h3>Game 33</h3>
+<p>Endless runner packed with speed and obstacles.</p>
+</div>
+</a>
+
+<!-- GAME 34 -->
+<a href="34.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game34.jpg">
+<h3>Game 34</h3>
+<p>Creative sandbox builder with realistic physics.</p>
+</div>
+</a>
+
+<!-- GAME 35 -->
+<a href="35.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game35.jpg">
+<h3>Game 35</h3>
+<p>Intense racing championship with stunning tracks.</p>
+</div>
+</a>
+
+<!-- GAME 36 -->
+<a href="36.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game36.jpg">
+<h3>Game 36</h3>
+<p>Fantasy RPG with powerful heroes and quests.</p>
+</div>
+</a>
+
+<!-- GAME 37 -->
+<a href="37.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game37.jpg">
+<h3>Game 37</h3>
+<p>Multiplayer battle game with strategic teamwork.</p>
+</div>
+</a>
+
+<!-- GAME 38 -->
+<a href="38.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game38.jpg">
+<h3>Game 38</h3>
+<p>Horror survival experience in a dark world.</p>
+</div>
+</a>
+
+<!-- GAME 39 -->
+<a href="39.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game39.jpg">
+<h3>Game 39</h3>
+<p>Classic card strategy game with smart tactics.</p>
+</div>
+</a>
+
+<!-- GAME 40 -->
+<a href="40.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game40.jpg">
+<h3>Game 40</h3>
+<p>Adventure quest across ancient mysterious lands.</p>
+</div>
+</a>
+
+<!-- GAME 41 -->
+<a href="41.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game41.jpg">
+<h3>Game 41</h3>
+<p>Fast arcade challenge with competitive scoring.</p>
+</div>
+</a>
+
+<!-- GAME 42 -->
+<a href="42.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game42.jpg">
+<h3>Game 42</h3>
+<p>Open-world driving simulator with realistic cars.</p>
+</div>
+</a>
+
+<!-- GAME 43 -->
+<a href="43.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game43.jpg">
+<h3>Game 43</h3>
+<p>Stealth mission game requiring smart strategy.</p>
+</div>
+</a>
+
+<!-- GAME 44 -->
+<a href="44.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game44.jpg">
+<h3>Game 44</h3>
+<p>Interactive mystery puzzle full of secrets.</p>
+</div>
+</a>
+
+<!-- GAME 45 -->
+<a href="45.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game45.jpg">
+<h3>Game 45</h3>
+<p>Competitive online arena with intense battles.</p>
+</div>
+</a>
+
+<!-- GAME 46 -->
+<a href="46.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game46.jpg">
+<h3>Game 46</h3>
+<p>Relaxing farming simulator with creative gameplay.</p>
+</div>
+</a>
+
+<!-- GAME 47 -->
+<a href="47.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game47.jpg">
+<h3>Game 47</h3>
+<p>High-intensity war game with tactical missions.</p>
+</div>
+</a>
+
+<!-- GAME 48 -->
+<a href="48.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game48.jpg">
+<h3>Game 48</h3>
+<p>Retro pixel platformer with classic vibes.</p>
+</div>
+</a>
+
+<!-- GAME 49 -->
+<a href="49.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game49.jpg">
+<h3>Game 49</h3>
+<p>Creative puzzle builder with smart mechanics.</p>
+</div>
+</a>
+
+<!-- GAME 50 -->
+<a href="50.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game50.jpg">
+<h3>Game 50</h3>
+<p>Exciting underwater exploration adventure.</p>
+</div>
+</a>
+
+<!-- GAME 51 -->
+<a href="51.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game51.jpg">
+<h3>Game 51</h3>
+<p>Cyberpunk shooter set in neon futuristic city.</p>
+</div>
+</a>
+
+<!-- GAME 52 -->
+<a href="52.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game52.jpg">
+<h3>Game 52</h3>
+<p>Competitive racing simulator with online mode.</p>
+</div>
+</a>
+
+<!-- GAME 53 -->
+<a href="53.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game53.jpg">
+<h3>Game 53</h3>
+<p>Adventure survival game with crafting system.</p>
+</div>
+</a>
+
+<!-- GAME 54 -->
+<a href="54.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game54.jpg">
+<h3>Game 54</h3>
+<p>Fantasy battle game with magical abilities.</p>
+</div>
+</a>
+
+<!-- GAME 55 -->
+<a href="55.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game55.jpg">
+<h3>Game 55</h3>
+<p>Challenging obstacle course with fast action.</p>
+</div>
+</a>
+
+<!-- GAME 56 -->
+<a href="56.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game56.jpg">
+<h3>Game 56</h3>
+<p>Classic board strategy game with smart AI.</p>
+</div>
+</a>
+
+<!-- GAME 57 -->
+<a href="57.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game57.jpg">
+<h3>Game 57</h3>
+<p>Epic boss fight challenge with extreme difficulty.</p>
+</div>
+</a>
+
+<!-- GAME 58 -->
+<a href="58.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game58.jpg">
+<h3>Game 58</h3>
+<p>Creative city-building simulator with expansion.</p>
+</div>
+</a>
+
+<!-- GAME 59 -->
+<a href="59.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game59.jpg">
+<h3>Game 59</h3>
+<p>High-speed bike racing game with cool tracks.</p>
+</div>
+</a>
+
+<!-- GAME 60 -->
+<a href="60.html" class="game-link">
+<div class="card">
+<img src="https://raw.githubusercontent.com/yourusername/yourrepo/main/images/game60.jpg">
+<h3>Game 60</h3>
+<p>Ultimate adventure finale with epic gameplay.</p>
+</div>
+</a>
 
 </body>
 </html>
