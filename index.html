@@ -187,9 +187,12 @@ background:rgba(255,255,255,0.08);
 }
 
 .announcement img{
-width:320px;
+width:300px;          /* Fixed width */
+height:300px;         /* Same as width → 1:1 ratio */
+aspect-ratio:1/1;     /* Extra safety for modern browsers */
 border-radius:15px;
-object-fit:cover;
+object-fit:cover;     /* Prevent distortion */
+flex-shrink:0;        /* Prevent resizing in flexbox */
 }
 
 .announcement-content{
@@ -235,8 +238,10 @@ text-align:center;
 }
 
 .announcement img{
-width:100%;
-max-width:400px;
+width:260px;
+height:260px;
+aspect-ratio:1/1;
+margin:0 auto;
 }
 
 .date{
