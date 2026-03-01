@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Galaxy Coming Soon</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:black;
+    overflow:hidden;
+    color:white;
+    font-family:sans-serif;
+}
+
+/* stars */
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background:url("https://www.transparenttextures.com/patterns/stardust.png");
+    animation: move 60s linear infinite;
+}
+
+@keyframes move{
+    from{transform:translate(0,0);}
+    to{transform:translate(-1000px,-1000px);}
+}
+
+h1{
+    font-size:70px;
+    letter-spacing:10px;
+    text-align:center;
+    animation: glow 3s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 20px cyan;}
+    to{text-shadow:0 0 60px magenta;}
+}
+</style>
+</head>
+
+<body>
+
+<h1>COMING SOON</h1>
+
+</body>
+</html>
