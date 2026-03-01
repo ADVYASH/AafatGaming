@@ -2,53 +2,370 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Galaxy Coming Soon</title>
+<title>ASRP GOD MODE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    overflow:hidden;
-    color:white;
-    font-family:sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif;}
+body{overflow:hidden;background:black;color:white}
+
+/* INTRO */
+#intro{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+animation:fadeOut 2s forwards;
+animation-delay:3s;
+}
+#intro h1{
+font-size:60px;
+color:#00ffff;
+text-shadow:0 0 40px #00ffff;
+animation:zoom 3s ease;
+}
+@keyframes zoom{
+0%{transform:scale(0.2);opacity:0;}
+100%{transform:scale(1);opacity:1;}
+}
+@keyframes fadeOut{
+to{opacity:0;visibility:hidden;}
 }
 
-/* stars */
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:url("https://www.transparenttextures.com/patterns/stardust.png");
-    animation: move 60s linear infinite;
+/* BACKGROUND */
+video{
+position:fixed;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-5;
+}
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:-4;
 }
 
-@keyframes move{
-    from{transform:translate(0,0);}
-    to{transform:translate(-1000px,-1000px);}
+/* PANEL */
+.panel{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.7);
+padding:40px;
+border-radius:20px;
+border:2px solid #00ffff;
+box-shadow:0 0 30px #00ffff;
+text-align:center;
+z-index:5;
+width:min(90%,500px);
+backdrop-filter:blur(10px);
 }
 
-h1{
-    font-size:70px;
-    letter-spacing:10px;
-    text-align:center;
-    animation: glow 3s infinite alternate;
+/* TITLE */
+.panel h1{
+font-size:clamp(40px,6vw,70px);
+color:#00ffff;
+text-shadow:0 0 20px #00ffff;
+margin-bottom:15px;
 }
 
-@keyframes glow{
-    from{text-shadow:0 0 20px cyan;}
-    to{text-shadow:0 0 60px magenta;}
+/* IP BOX */
+.ip{
+background:#111;
+padding:12px;
+border-radius:8px;
+margin-bottom:15px;
+word-break:break-word;
+border:1px solid #00ffff;
+}
+
+/* BUTTONS */
+button{
+padding:10px 20px;
+margin:5px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+}
+button:hover{
+transform:scale(1.1);
+box-shadow:0 0 20px #00ffff,0 0 40px #00ffff;
+}
+.copy{background:#00ffff;color:black;}
+.discord{background:#5865F2;color:white;}
+.back{
+position:fixed;
+top:20px;
+left:20px;
+background:#00ffff;
+color:black;
+}
+
+/* STATUS */
+.status{margin-top:15px;font-size:14px;}
+.online{color:lime;}
+.offline{color:red;}
+.ping{
+display:inline-block;
+width:10px;
+height:10px;
+background:lime;
+border-radius:50%;
+margin-left:8px;
+animation:ping 1s infinite;
+}
+@keyframes ping{
+0%{box-shadow:0 0 0 0 rgba(0,255,0,0.7);}
+70%{box-shadow:0 0 0 10px rgba(0,255,0,0);}
+100%{box-shadow:0 0 0 0 rgba(0,255,0,0);}
+}
+
+/* PLAYER BOX */
+#playerBox{
+margin-top:15px;
+display:none;
+}
+#playerList{
+max-height:150px;
+overflow-y:auto;
+background:#111;
+padding:10px;
+border-radius:8px;
+font-size:14px;
+text-align:left;
+border:1px solid #00ffff;
+}
+
+/* PARTICLES */
+#particles{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+z-index:3;
+}
+
+.rules{
+background:red;
+color:white;
+}
+
+.rules:hover{
+box-shadow:0 0 20px red,0 0 40px red;
 }
 </style>
 </head>
 
 <body>
 
-<h1>COMING SOON</h1>
+<div id="intro"><h1>ASRP SEASON 2</h1></div>
+<audio id="introSound" src="intro.mp3"></audio>
 
+<button class="back" onclick="window.location.href='index.html'">⬅ Back</button>
+
+<video autoplay muted loop>
+<source src="asrp.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<canvas id="bg"></canvas>
+<canvas id="particles"></canvas>
+
+<div class="panel">
+<h1>ASRP</h1>
+
+<div class="ip">play.syndicateroleplay.fun</div>
+<button class="copy" onclick="copyIP()">Copy IP</button>
+<a href="https://discord.gg/jqEfUtnfYR" target="_blank">
+<button class="discord">Join Discord</button>
+</a>
+
+<a href="rules.html">
+<button class="rules">Rules</button>
+</a>
+
+<div class="status" id="status">Checking server...</div>
+
+<div id="playerBox">
+<h3 style="color:#00ffff;margin-bottom:8px;">Online Players</h3>
+<div id="playerList"></div>
+</div>
+</div>
+
+<script>
+
+/* RESPONSIVE */
+window.addEventListener("resize",()=>{
+renderer.setSize(window.innerWidth,window.innerHeight);
+camera.aspect=window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix();
+pCanvas.width=window.innerWidth;
+pCanvas.height=window.innerHeight;
+});
+
+/* SOUND */
+const introSound=document.getElementById("introSound");
+window.addEventListener("click",()=>{
+introSound.volume=0;
+introSound.play();
+let fade=setInterval(()=>{
+if(introSound.volume<1){
+introSound.volume+=0.05;
+}else{
+clearInterval(fade);
+}
+},100);
+},{once:true});
+
+/* COPY */
+function copyIP(){
+navigator.clipboard.writeText("play.syndicateroleplay.fun");
+
+let msg=document.createElement("div");
+msg.innerText="✔ IP Copied!";
+msg.style.position="fixed";
+msg.style.bottom="30px";
+msg.style.left="50%";
+msg.style.transform="translateX(-50%)";
+msg.style.background="#00ffff";
+msg.style.color="black";
+msg.style.padding="10px 20px";
+msg.style.borderRadius="8px";
+msg.style.boxShadow="0 0 20px #00ffff";
+msg.style.zIndex="9999";
+document.body.appendChild(msg);
+
+setTimeout(()=>msg.remove(),2000);
+}
+
+/* SERVER STATUS + PLAYER LIST */
+async function checkServer(){
+try{
+const res=await fetch("https://api.mcsrvstat.us/2/in4.terohost.in:25635");
+const data=await res.json();
+
+if(data.online){
+document.getElementById("status").innerHTML=
+"<span class='online'>ONLINE</span> <span class='ping'></span><br>"+
+"Players: "+data.players.online+" / "+data.players.max+"<br>"+
+"Version: "+data.version;
+
+if(data.players.list && data.players.list.length>0){
+let html="";
+data.players.list.forEach(p=>{
+html+=`<div style="padding:6px;margin-bottom:4px;background:rgba(0,255,255,0.1);border-radius:6px;">⚡ ${p}</div>`;
+});
+document.getElementById("playerList").innerHTML=html;
+document.getElementById("playerBox").style.display="block";
+}else{
+document.getElementById("playerList").innerHTML="<i>No players visible</i>";
+document.getElementById("playerBox").style.display="block";
+}
+
+}else{
+document.getElementById("status").innerHTML="<span class='offline'>OFFLINE</span>";
+document.getElementById("playerBox").style.display="none";
+}
+
+}catch{
+document.getElementById("status").innerHTML="<span class='offline'>Error Fetching</span>";
+document.getElementById("playerBox").style.display="none";
+}
+}
+checkServer();
+setInterval(checkServer,15000);
+
+/* THREE JS */
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById("bg"),alpha:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+
+const geometry=new THREE.BoxGeometry();
+const material=new THREE.MeshBasicMaterial({color:0x00ffff,wireframe:true});
+
+let cubes=[];
+for(let i=0;i<8;i++){
+let cube=new THREE.Mesh(geometry,material);
+cube.position.x=(Math.random()-0.5)*12;
+cube.position.y=(Math.random()-0.5)*8;
+cube.position.z=(Math.random()-0.5)*-15;
+scene.add(cube);
+cubes.push(cube);
+}
+camera.position.z=6;
+
+function animate(){
+requestAnimationFrame(animate);
+cubes.forEach(c=>{
+c.rotation.x+=0.008;
+c.rotation.y+=0.008;
+});
+renderer.render(scene,camera);
+}
+animate();
+
+/* PARALLAX */
+let mouseX=0,mouseY=0;
+document.addEventListener("mousemove",(e)=>{
+mouseX=(e.clientX/window.innerWidth-0.5)*3;
+mouseY=-(e.clientY/window.innerHeight-0.5)*3;
+});
+function smoothMove(){
+camera.position.x+=(mouseX-camera.position.x)*0.05;
+camera.position.y+=(mouseY-camera.position.y)*0.05;
+requestAnimationFrame(smoothMove);
+}
+smoothMove();
+
+/* PARTICLES */
+const pCanvas=document.getElementById("particles");
+const ctx=pCanvas.getContext("2d");
+pCanvas.width=window.innerWidth;
+pCanvas.height=window.innerHeight;
+let particles=[];
+
+document.addEventListener("click",(e)=>{
+for(let i=0;i<30;i++){
+particles.push({
+x:e.clientX,
+y:e.clientY,
+dx:(Math.random()-0.5)*5,
+dy:(Math.random()-0.5)*5,
+life:80
+});
+}
+});
+
+function animateParticles(){
+ctx.clearRect(0,0,pCanvas.width,pCanvas.height);
+for(let i=particles.length-1;i>=0;i--){
+let p=particles[i];
+p.x+=p.dx;
+p.y+=p.dy;
+p.life--;
+ctx.fillStyle="rgba(0,255,255,"+(p.life/80)+")";
+ctx.fillRect(p.x,p.y,3,3);
+if(p.life<=0)particles.splice(i,1);
+}
+requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+</script>
 </body>
 </html>
