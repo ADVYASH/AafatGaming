@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ===== STEP 1: Disable Selection & Drag ===== */
+
+*{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+
+img{
+    pointer-events: none;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+color:white;
+background:url("https://media.giphy.com/media/6FmWneK9CsoumzFsqZ/giphy.gif") no-repeat center center fixed;
+background-size:cover;
+overflow-x:hidden;
+}
+
+/* Dark overlay */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.75);
+z-index:-1;
+}
+
+/* ================= LOADER ================= */
+
+#loader{
+position:fixed;
+inset:0;
+background:#0d0d0d;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+transition:opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loader-logo{
+font-size:40px;
+font-weight:800;
+letter-spacing:2px;
+margin-bottom:25px;
+}
+
+.loader-line{
+width:200px;
+height:3px;
+background:#222;
+overflow:hidden;
+}
+
+.loader-progress{
+height:100%;
+width:0%;
+background:#ff3cac;
+animation:load 2.5s forwards ease;
+}
+
+@keyframes load{
+to{width:100%;}
+}
+
+.hide-loader{
+opacity:0;
+visibility:hidden;
+}
+
+/* ================= NAVBAR ================= */
+
+nav{
+display:flex;
+justify-content:center;
+gap:25px;
+padding:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:500;
+position:relative;
+padding-bottom:5px;
+transition:0.3s;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:0;
+width:0%;
+height:2px;
+background:#ff3cac;
+transition:0.3s;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+text-align:center;
+padding:140px 20px 100px;
+animation:fadeIn 1.5s ease;
+}
+
+.hero h3{
+font-weight:400;
+letter-spacing:1px;
+margin-bottom:10px;
+opacity:0.8;
+}
+
+.hero h1{
+font-size:64px;
+font-weight:900;
+margin-bottom:15px;
+animation:float 4s ease-in-out infinite;
+}
+
+.hero h4{
+font-weight:400;
+opacity:0.85;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(30px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+}
+
+/* ================= ANNOUNCEMENT ================= */
+
+.announcement{
+max-width:1100px;
+margin:0 auto 80px;
+display:flex;
+gap:40px;
+padding:40px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+border-radius:18px;
+transition:0.4s;
+}
+
+.announcement:hover{
+transform:translateY(-8px);
+background:rgba(255,255,255,0.08);
+}
+
+.announcement img{
+width:320px;
+border-radius:15px;
+object-fit:cover;
+}
+
+.announcement-content{
+flex:1;
+}
+
+.announcement-content h2{
+text-align:center;
+margin-bottom:8px;
+}
+
+.announcement-content h4{
+text-align:center;
+opacity:0.8;
+margin-bottom:15px;
+}
+
+.date{
+text-align:right;
+font-size:14px;
+opacity:0.7;
+margin-bottom:20px;
+}
+
+.announcement-content p{
+text-align:justify;
+margin-bottom:15px;
+line-height:1.6;
+opacity:0.9;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+.hero h1{
+font-size:38px;
+}
+
+.announcement{
+flex-direction:column;
+text-align:center;
+}
+
+.announcement img{
+width:100%;
+max-width:400px;
+}
+
+.date{
+text-align:center;
+}
+}
+
+footer{
+text-align:center;
+padding:25px;
+background:rgba(0,0,0,0.6);
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+<div class="loader-logo">Aafat Gaming</div>
+<div class="loader-line">
+<div class="loader-progress"></div>
+</div>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="a.b.o.u.t">About</a>
+<a href="r.u.l.e.s">Rules</a>
+<a href="s.o.c.i.a.l">Social</a>
+<a href="m.g">Minigames</a>
+<a href="a.s.r.p">ASRP</a>
+<a href="w.f">Whitelist Form</a>
+</nav>
+
+<div class="hero">
+<h3>💥🚪 You Are Now Entering ⚡🔥</h3>
+<h1>Aafat Gaming World</h1>
+<h4>🎮🔥 “No Fear, Only Aafat!” ⚡💪</h4>
+</div>
+
+<div class="announcement">
+<div class="announcement-content">
+<h2>✨ BIG UPDATE RELEASED ✨</h2>
+<h4>New Adventures Are Live Now!</h4>
+<div class="date">📅 01 March 2026</div>
+<p>Aafat Gaming introduces a refined gameplay experience with improved visuals and smoother performance.</p>
+<p>Explore new missions, compete with your squad, and unlock exclusive rewards.</p>
+<p>This is not just gaming — this is Aafat Gaming World.</p>
+</div>
+<img src="https://raw.githubusercontent.com/ADVYASH/AafatGaming/main/update.jpg">
+</div>
+
+<footer>
+©All Rights Reserved to Aafat Gaming
+</footer>
+
+<script>
+
+/* ===== EXTREME LOCK MODE ===== */
+
+document.body.style.overflow = "hidden";
+document.body.style.pointerEvents = "none";
+
+/* Disable right click */
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+/* Disable all keys */
+document.addEventListener("keydown", e => e.preventDefault());
+
+/* Disable drag */
+document.addEventListener("dragstart", e => e.preventDefault());
+
+/* Cinematic Unlock After Loader */
+setTimeout(() => {
+
+    document.getElementById("loader").classList.add("hide-loader");
+
+    /* Unlock page */
+    document.body.style.pointerEvents = "auto";
+    document.body.style.overflow = "auto";
+
+}, 3000);
+
+</script>
+
+</body>
+</html>
