@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming | Ultra Donate</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    background:radial-gradient(circle at center,#050510,#000);
+    overflow:hidden;
+    color:white;
+}
+
+/* STAR CANVAS */
+canvas#space{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* NAV */
+.back-btn,.toggle{
+    position:fixed;
+    top:20px;
+    padding:8px 16px;
+    border-radius:8px;
+    border:2px solid #00f7ff;
+    color:#00f7ff;
+    box-shadow:0 0 15px #00f7ff;
+    cursor:pointer;
+    text-decoration:none;
+}
+.back-btn{left:20px;}
+.toggle{right:20px;}
+.back-btn:hover,.toggle:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+/* CENTER CARD */
+.container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.card{
+    width:100%;
+    max-width:450px;
+    padding:30px;
+    border-radius:25px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,0.05);
+    box-shadow:0 0 80px rgba(0,255,255,0.4);
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.title{
+    text-align:center;
+    font-size:22px;
+    text-shadow:0 0 30px #00f7ff;
+}
+
+/* RGB GLASS INPUT */
+.input-box{
+    position:relative;
+}
+
+.input-box label{
+    position:absolute;
+    left:15px;
+    top:14px;
+    color:#aaa;
+    pointer-events:none;
+    transition:0.3s ease;
+    font-size:14px;
+}
+
+.input-box input{
+    width:100%;
+    padding:14px;
+    border-radius:15px;
+    border:none;
+    outline:none;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    color:white;
+    font-size:14px;
+    position:relative;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label{
+    top:-8px;
+    left:12px;
+    font-size:12px;
+    color:#00f7ff;
+}
+
+.input-box input::placeholder{
+    color:#00f7ff;
+    opacity:0.6;
+    text-shadow:0 0 8px #00f7ff;
+}
+
+.input-box::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:18px;
+    background:linear-gradient(45deg,
+        red,orange,yellow,green,cyan,blue,violet,red);
+    background-size:400%;
+    z-index:-1;
+    opacity:0;
+}
+
+.input-box:focus-within::before{
+    opacity:1;
+    animation:rgbMove 4s linear infinite;
+}
+
+.input-box::after{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:15px;
+    background:rgba(0,0,0,0.9);
+    z-index:-1;
+}
+
+@keyframes rgbMove{
+    0%{background-position:0%}
+    100%{background-position:400%}
+}
+
+.input-box:focus-within{
+    box-shadow:0 0 15px #00f7ff,
+               0 0 30px #00f7ff,
+               0 0 60px #00f7ff;
+}
+
+/* BUTTON */
+button{
+    padding:12px;
+    border-radius:15px;
+    border:none;
+    cursor:pointer;
+    background:linear-gradient(45deg,cyan,blue);
+    color:black;
+    font-weight:bold;
+}
+
+/* QR */
+.top-qr{
+    display:none;
+    text-align:center;
+}
+
+#qrCanvas{
+    display:block;
+    margin:0 auto;
+    width:200px;
+    height:200px;
+    background:white;
+    padding:12px;
+    border-radius:15px;
+    box-shadow:0 0 35px #00f7ff;
+}
+
+.payment-section{
+    display:none;
+    flex-direction:column;
+    gap:15px;
+    text-align:center;
+}
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+
+<a href="index.html" class="back-btn">⬅ Back</a>
+<div class="toggle" onclick="toggleSpeed()">Warp Mode 🚀</div>
+
+<div class="container">
+<div class="card">
+
+<div class="title">💎 Support Aafat Gaming</div>
+
+<div id="topQR" class="top-qr">
+    <canvas id="qrCanvas"></canvas>
+</div>
+
+<div id="formSection">
+
+<div class="input-box">
+    <input type="text" id="name" placeholder=" " required>
+    <label>Your Name</label>
+</div>
+
+<div class="input-box">
+    <input type="text" id="mobile" placeholder=" " required>
+    <label>Mobile Number</label>
+</div>
+
+<div class="input-box">
+    <input type="text" id="message" placeholder=" ">
+    <label>Your Message (Optional)</label>
+</div>
+
+<div class="input-box">
+    <input type="number" id="amount" placeholder=" " required>
+    <label>Donation Amount (₹)</label>
+</div>
+
+<button onclick="proceed()">Proceed To Payment</button>
+
+</div>
+
+<div class="payment-section" id="paymentSection">
+
+<button onclick="showUPI()">Pay Using UPI App</button>
+<button onclick="showQR()">Generate QR Code</button>
+
+<div id="upiBox" style="display:none;">
+UPI ID: <b>aafatgaming2623@oksbi</b><br><br>
+<button onclick="payUPI()">Open UPI App</button>
+</div>
+
+<button id="paidBtn" style="display:none;" onclick="confirmPayment()">I Have Paid</button>
+
+</div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<script>
+const webhookURL="https://discord.com/api/webhooks/1478120403011506519/SbUpQJNBFeeuXuxNMHurt1oI6UGaMwhr-Ueoic77e8ggdin9ho44_1mYCBXAGwt1jgpX";
+
+function proceed(){
+    let name=document.getElementById("name").value.trim();
+    let mobile=document.getElementById("mobile").value.trim();
+    let amount=document.getElementById("amount").value.trim();
+
+    if(!name || !mobile){
+        alert("Name and Mobile Number are compulsory!");
+        return;
+    }
+    if(!amount || amount<=0){
+        alert("Enter valid donation amount!");
+        return;
+    }
+
+    document.getElementById("formSection").style.display="none";
+    document.getElementById("paymentSection").style.display="flex";
+}
+
+function showUPI(){
+    document.getElementById("upiBox").style.display="block";
+    document.getElementById("topQR").style.display="none";
+    document.getElementById("paidBtn").style.display="block";
+}
+
+function showQR(){
+    let amount=document.getElementById("amount").value;
+    let upiLink=`upi://pay?pa=aafatgaming2623@oksbi&pn=AafatGaming&am=${amount}&cu=INR`;
+    let canvas=document.getElementById("qrCanvas");
+    canvas.width=200;
+    canvas.height=200;
+    new QRious({element:canvas,value:upiLink,size:200});
+    document.getElementById("topQR").style.display="block";
+    document.getElementById("paidBtn").style.display="block";
+}
+
+function payUPI(){
+    let amount=document.getElementById("amount").value;
+    window.location.href=`upi://pay?pa=aafatgaming2623@oksbi&pn=AafatGaming&am=${amount}&cu=INR`;
+}
+
+function confirmPayment(){
+
+    let name=document.getElementById("name").value.trim();
+    let mobile=document.getElementById("mobile").value.trim();
+    let message=document.getElementById("message").value.trim();
+    let amount=document.getElementById("amount").value.trim();
+
+    let maskedMobile="xxxxxx"+mobile.slice(-4);
+    if(!message){message="No message provided.";}
+
+    let data={
+        embeds:[{
+            title:"🎁 New Donation Received!",
+            color:65535,
+            fields:[
+                {name:"👤 Donor Name",value:name},
+                {name:"📱 Mobile Number",value:maskedMobile},
+                {name:"💰 Donation Amount",value:"₹ "+amount},
+                {name:"💬 Message",value:"***"+message+"***"}
+            ],
+            image:{
+                url:"https://cdn.discordapp.com/attachments/1311247446051131453/1477916527150891030/a-cinematic-promotional-banner-featuring__p83xDQTThmWVTzzs7C-fA_UiH__hrIRiKLOdTonIZIdA_cover_sd.jpeg?ex=69a72946&is=69a5d7c6&hm=04ac34fb924fbc3f1e310457e6e3437ff04dd9d719514e9b5eb61d201fc2fc4a&"
+            },
+            footer:{
+                text:"Thanks for your Love!"
+            }
+        }]
+    };
+
+    fetch(webhookURL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+    });
+
+    window.location.href="donate.html";
+}
+
+/* STAR BACKGROUND */
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+let speedMultiplier=1;
+
+for(let i=0;i<500;i++){
+    stars.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.5
+    });
+}
+
+function animate(){
+    ctx.fillStyle="rgba(0,0,0,0.5)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    stars.forEach(s=>{
+        s.y+=s.speed*speedMultiplier;
+        if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;}
+        ctx.fillRect(s.x,s.y,s.size,speedMultiplier>1?s.size*4:s.size);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+function toggleSpeed(){
+    speedMultiplier=speedMultiplier===1?6:1;
+    document.body.style.boxShadow="0 0 200px #00f7ff inset";
+    setTimeout(()=>{document.body.style.boxShadow="none";},300);
+}
+</script>
+
+</body>
+</html>
