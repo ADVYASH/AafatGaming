@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battle Royale Arena</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#0a0a12;
+    font-family:Arial;
+    color:white;
+}
+canvas{display:block;}
+#ui{
+    position:absolute;
+    top:10px;
+    left:10px;
+    font-size:18px;
+    z-index:5;
+}
+
+#backBtn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:#222;
+    color:white;
+    padding:8px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:Arial;
+    z-index:100;
+    transition:0.2s;
+}
+
+#backBtn:hover{
+    background:#444;
+}
+</style>
+</head>
+<body>
+<div id="backBtn" onclick="goBack()">⬅ Back</div>
+
+<div id="ui">
+Level: <span id="level">1</span> |
+Score: <span id="score">0</span> |
+Enemies Left: <span id="enemyLeft">0</span> |
+Health: <span id="health">100</span>
+</div>
+
+<canvas id="game"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+/* ===== MAP SETTINGS ===== */
+
+const mapWidth = 2000;
+const mapHeight = 2000;
+
+let camera = {x:0,y:0};
+
+let level = 1;
+let score = 0;
+let enemies = [];
+let bullets = [];
+let keys = {};
+
+/* ===== CHARACTER FACTORY ===== */
+
+function createCharacter(x,y,color){
+    return {
+        x,y,
+        vx:0,vy:0,
+        angle:0,
+        size:18,
+        health:100,
+        color,
+        alive:true
+    };
+}
+
+let player = createCharacter(mapWidth/2,mapHeight/2,"cyan");
+
+/* ===== INPUT ===== */
+
+window.addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true);
+window.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+
+canvas.addEventListener("click",e=>{
+    let mx = e.clientX + camera.x;
+    let my = e.clientY + camera.y;
+    let angle = Math.atan2(my-player.y,mx-player.x);
+    player.angle = angle;
+
+    bullets.push({
+        x:player.x,
+        y:player.y,
+        vx:Math.cos(angle)*12,
+        vy:Math.sin(angle)*12
+    });
+});
+
+/* ===== SPAWN ENEMIES ===== */
+
+function spawnEnemies(){
+    enemies=[];
+    let count = 8 + level*4;
+    for(let i=0;i<count;i++){
+        enemies.push(createCharacter(
+            Math.random()*mapWidth,
+            Math.random()*mapHeight,
+            "red"
+        ));
+    }
+}
+
+spawnEnemies();
+
+/* ===== UPDATE ===== */
+
+function update(){
+
+/* PLAYER MOVEMENT */
+if(player.alive){
+    if(keys["w"]) player.vy-=0.6;
+    if(keys["s"]) player.vy+=0.6;
+    if(keys["a"]) player.vx-=0.6;
+    if(keys["d"]) player.vx+=0.6;
+
+    player.vx*=0.9;
+    player.vy*=0.9;
+
+    player.x+=player.vx;
+    player.y+=player.vy;
+}
+
+/* MAP BOUNDARY (NO GO ZONE) */
+player.x = Math.max(player.size,Math.min(mapWidth-player.size,player.x));
+player.y = Math.max(player.size,Math.min(mapHeight-player.size,player.y));
+
+/* BULLETS */
+bullets.forEach((b,i)=>{
+    b.x+=b.vx;
+    b.y+=b.vy;
+
+    enemies.forEach((e,ei)=>{
+        if(e.alive && Math.hypot(b.x-e.x,b.y-e.y)<20){
+            e.health-=50;
+            bullets.splice(i,1);
+            if(e.health<=0){
+                e.alive=false;
+                enemies.splice(ei,1);
+                score+=10;
+            }
+        }
+    });
+});
+
+/* ENEMY AI */
+enemies.forEach(e=>{
+    let angle=Math.atan2(player.y-e.y,player.x-e.x);
+    e.angle=angle;
+    e.x+=Math.cos(angle)*(1+level*0.3);
+    e.y+=Math.sin(angle)*(1+level*0.3);
+
+    if(Math.hypot(player.x-e.x,player.y-e.y)<20){
+        player.health-=0.3;
+    }
+});
+
+/* LEVEL COMPLETE */
+if(enemies.length===0){
+    level++;
+    player.health=100;
+    spawnEnemies();
+}
+
+/* CAMERA FOLLOW */
+camera.x += (player.x-canvas.width/2-camera.x)*0.1;
+camera.y += (player.y-canvas.height/2-camera.y)*0.1;
+
+/* UPDATE UI */
+document.getElementById("level").innerText=level;
+document.getElementById("score").innerText=score;
+document.getElementById("enemyLeft").innerText=enemies.length;
+document.getElementById("health").innerText=Math.floor(player.health);
+
+if(player.health<=0){
+    sendScoreToDiscord(level, score, enemies.length);
+    alert("Game Over! Final Score: "+score);
+    location.reload();
+}
+}
+
+/* ===== DRAW CHARACTER ===== */
+
+function drawCharacter(char){
+    ctx.save();
+    ctx.translate(char.x,char.y);
+    ctx.rotate(char.angle);
+
+    ctx.fillStyle=char.color;
+    ctx.fillRect(-10,-15,20,30);
+
+    ctx.beginPath();
+    ctx.arc(0,-20,8,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle="gray";
+    ctx.fillRect(10,-3,25,6);
+
+    ctx.restore();
+}
+
+/* ===== DRAW ===== */
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.save();
+ctx.translate(-camera.x,-camera.y);
+
+/* MAP */
+ctx.fillStyle="#151530";
+ctx.fillRect(0,0,mapWidth,mapHeight);
+
+/* RED BORDER (NO GO) */
+ctx.strokeStyle="red";
+ctx.lineWidth=10;
+ctx.strokeRect(0,0,mapWidth,mapHeight);
+
+/* PLAYER */
+if(player.alive) drawCharacter(player);
+
+/* ENEMIES */
+enemies.forEach(e=>{
+    if(e.alive) drawCharacter(e);
+});
+
+/* BULLETS */
+ctx.fillStyle="yellow";
+bullets.forEach(b=>{
+    ctx.beginPath();
+    ctx.arc(b.x,b.y,4,0,Math.PI*2);
+    ctx.fill();
+});
+
+ctx.restore();
+}
+
+function sendScoreToDiscord(level, score, enemiesLeft){
+
+fetch("https://discord.com/api/webhooks/1478499282637029486/ZAKKDMogjCpS9bu-mQ_yqD8y7u6HvRL0ayv3J5jY6YVvRqVgHYDrbwuY6zxsuZNwTuWG", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        username: "Battle Royale Bot",
+        embeds: [{
+            title: "🏆 Game Finished!",
+            color: 16711680,
+            fields: [
+                { name: "Level", value: level.toString(), inline: true },
+                { name: "Score", value: score.toString(), inline: true },
+                { name: "Enemies Left", value: enemiesLeft.toString(), inline: true }
+            ],
+            timestamp: new Date()
+        }]
+    })
+});
+}
+
+let animationId;
+
+function loop(){
+    update();
+    draw();
+    animationId = requestAnimationFrame(loop);
+}
+
+loop();
+
+function goBack(){
+    cancelAnimationFrame(animationId);
+    window.location.href = "minigames.html";
+}
+</script>
+</body>
+</html>
