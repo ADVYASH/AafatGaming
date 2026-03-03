@@ -5,87 +5,189 @@
 <title>Neon 60 Mini Games - By Yash Kumar</title>
 
 <style>
+
+/* ===== BASE ===== */
+html{ scroll-behavior:smooth; }
+
 body{
-    margin:0;
-    font-family:'Segoe UI', sans-serif;
-    background: linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);
-    background-size:400% 400%;
-    animation: neonBG 12s ease infinite;
-    padding:40px;
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:radial-gradient(circle at center,#050510,#000);
+color:white;
+overflow-x:hidden;
+padding:100px 40px 60px;
 }
 
-@keyframes neonBG{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+/* ===== STAR CANVAS ===== */
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+pointer-events:none;
 }
 
+/* ===== TITLE ===== */
 h1{
-    text-align:center;
-    color:#00f7ff;
-    font-size:38px;
-    text-shadow:0 0 10px #00f7ff,
-                0 0 20px #00f7ff,
-                0 0 40px #00f7ff;
-    margin-bottom:50px;
+text-align:center;
+color:#00f7ff;
+font-size:40px;
+letter-spacing:3px;
+text-shadow:
+0 0 10px #00f7ff,
+0 0 30px #00f7ff,
+0 0 60px #0088ff;
+margin-bottom:60px;
+animation: glowPulse 2s ease-in-out infinite alternate;
 }
 
+@keyframes glowPulse{
+from{ text-shadow:0 0 10px #00f7ff; }
+to{
+text-shadow:
+0 0 30px #00f7ff,
+0 0 60px #0088ff,
+0 0 100px #8a2be2;
+}
+}
+
+/* ===== NAV BUTTONS ===== */
+.back-btn, .warp-btn{
+position:fixed;
+top:20px;
+padding:8px 16px;
+border-radius:8px;
+text-decoration:none;
+border:2px solid #00f7ff;
+color:#00f7ff;
+box-shadow:0 0 15px #00f7ff;
+transition:0.3s;
+cursor:pointer;
+z-index:10;
+}
+
+.back-btn{ left:20px; }
+.warp-btn{ right:20px; }
+
+.back-btn:hover,
+.warp-btn:hover{
+background:#00f7ff;
+color:black;
+}
+
+/* ===== GRID ===== */
 .container{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-    gap:25px;
-    max-width:1500px;
-    margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+gap:25px;
+max-width:1500px;
+margin:auto;
 }
 
-.game-link{
-    text-decoration:none;
-}
-
+/* ===== CARD ===== */
 .card{
-    background:rgba(0,0,0,0.7);
-    border:2px solid #00f7ff;
-    border-radius:15px;
-    padding:15px;
-    text-align:center;
-    transition:0.4s;
-    box-shadow:0 0 10px #00f7ff;
+background:rgba(0,0,0,0.65);
+border:2px solid rgba(0,247,255,0.3);
+border-radius:15px;
+padding:15px;
+text-align:center;
+transition:all 0.35s ease;
+backdrop-filter:blur(8px);
 }
 
 .card:hover{
-    transform:translateY(-8px) scale(1.03);
-    box-shadow:0 0 20px #00f7ff,
-               0 0 40px #00f7ff,
-               0 0 60px #00f7ff;
+transform:translateY(-6px);
+border-color:#00f7ff;
+box-shadow:
+0 0 15px #00f7ff,
+0 0 35px #00f7ff,
+0 0 60px rgba(0,247,255,0.6);
 }
 
 .card img{
-    width:100%;
-    aspect-ratio:1/1;
-    object-fit:cover;
-    border-radius:10px;
-    border:2px solid #ff00ff;
-    box-shadow:0 0 15px #ff00ff;
+width:100%;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:10px;
+border:2px solid #ff00ff;
+box-shadow:0 0 15px #ff00ff;
 }
 
 .card h3{
-    margin:12px 0 6px;
-    color:#00f7ff;
-    font-size:16px;
-    text-shadow:0 0 8px #00f7ff;
+margin:12px 0 6px;
+color:#00f7ff;
+font-size:16px;
+text-shadow:0 0 8px #00f7ff;
 }
 
 .card p{
-    font-size:13px;
-    color:#ffffff;
-    opacity:0.85;
+font-size:13px;
+color:#cccccc;
 }
+
+.game-link{
+text-decoration:none;
+}
+
+@media(max-width:600px){
+body{ padding:90px 20px; }
+h1{ font-size:28px; }
+}
+
+/* ===== SEARCH BAR ===== */
+.search-container{
+text-align:center;
+margin-bottom:40px;
+}
+
+#searchInput{
+width:320px;
+max-width:90%;
+padding:12px 20px;
+border-radius:30px;
+border:2px solid #00f7ff;
+background:rgba(0,0,0,0.6);
+color:white;
+font-size:14px;
+outline:none;
+box-shadow:0 0 15px #00f7ff;
+transition:0.3s;
+}
+
+#searchInput:focus{
+box-shadow:
+0 0 20px #00f7ff,
+0 0 40px #8a2be2;
+}
+
+/* ===== RGB ANIMATED CARD BORDER ===== */
+.card{
+position:relative;
+background:rgba(0,0,0,0.6);
+border-radius:15px;
+padding:15px;
+text-align:center;
+transition:0.4s;
+overflow:hidden;
+}
+
 </style>
 </head>
 
 <body>
+<canvas id="space"></canvas>
+
+<a href="index.html" class="back-btn">⬅ Back</a>
+<div class="warp-btn" onclick="toggleSpeed()">Warp Mode</div>
 
 <h1>🎮Mini Games🎮</h1>
+
+<!-- SEARCH BAR -->
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="🔍 Search games..." onkeyup="searchGames()">
+</div>
 
 <div class="container">
 
@@ -629,5 +731,80 @@ h1{
 </div>
 </a>
 
+<script>
+
+/* ===== STAR BACKGROUND ===== */
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+});
+
+let stars=[];
+let speedMultiplier=1;
+
+class Star{
+constructor(){this.reset();}
+reset(){
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
+this.size=Math.random()*2;
+this.speed=Math.random()*1+0.5;
+}
+update(){
+this.y+=this.speed*speedMultiplier;
+if(this.y>canvas.height){
+this.y=0;
+this.x=Math.random()*canvas.width;
+}
+}
+draw(){
+ctx.beginPath();
+ctx.fillStyle="white";
+if(speedMultiplier>1){
+ctx.fillRect(this.x,this.y,this.size,this.size*4);
+}else{
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+}
+}
+
+for(let i=0;i<500;i++){stars.push(new Star());}
+
+function animate(){
+ctx.fillStyle="rgba(0,0,0,0.5)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{s.update();s.draw();});
+requestAnimationFrame(animate);
+}
+animate();
+
+function toggleSpeed(){
+speedMultiplier=speedMultiplier===1?6:1;
+}
+
+/* ===== SEARCH FUNCTION ===== */
+function searchGames(){
+let input = document.getElementById("searchInput").value.toLowerCase();
+let cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+    let title = card.querySelector("h3").innerText.toLowerCase();
+    let desc = card.querySelector("p").innerText.toLowerCase();
+
+    if(title.includes(input) || desc.includes(input)){
+        card.parentElement.style.display = "block";
+    } else {
+        card.parentElement.style.display = "none";
+    }
+});
+}
+</script>
 </body>
 </html>
