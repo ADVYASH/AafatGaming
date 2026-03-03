@@ -2,53 +2,465 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Galaxy Coming Soon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming | Rules</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Lobster&display=swap" rel="stylesheet">
 
 <style>
+
+/* ===== SMOOTH SCROLL ===== */
+html{ scroll-behavior:smooth; }
+
+/* ===== BASE ===== */
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    overflow:hidden;
-    color:white;
-    font-family:sans-serif;
+margin:0;
+font-family:'Orbitron',sans-serif;
+background:radial-gradient(circle at center,#050510,#000);
+color:white;
+overflow-x:hidden;
 }
 
-/* stars */
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:url("https://www.transparenttextures.com/patterns/stardust.png");
-    animation: move 60s linear infinite;
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+pointer-events:none;
 }
 
-@keyframes move{
-    from{transform:translate(0,0);}
-    to{transform:translate(-1000px,-1000px);}
+/* ===== NAV BUTTONS ===== */
+.back-btn, .toggle{
+position:fixed;
+top:20px;
+padding:8px 16px;
+border-radius:8px;
+text-decoration:none;
+border:2px solid #00f7ff;
+color:#00f7ff;
+box-shadow:0 0 15px #00f7ff;
+transition:0.3s;
+cursor:pointer;
+z-index:10;
 }
 
-h1{
-    font-size:70px;
-    letter-spacing:10px;
-    text-align:center;
-    animation: glow 3s infinite alternate;
+.back-btn{ left:20px; }
+.toggle{ right:20px; }
+
+.back-btn:hover,
+.toggle:hover{
+background:#00f7ff;
+color:black;
 }
 
-@keyframes glow{
-    from{text-shadow:0 0 20px cyan;}
-    to{text-shadow:0 0 60px magenta;}
+/* ===== CONTAINER ===== */
+.container{
+max-width:1100px;
+margin:120px auto 80px auto;
+padding:20px;
+text-align:center;
+}
+
+/* ===== INSANE TITLE ===== */
+.main-title{
+position:relative;
+display:inline-block;
+font-size:64px;
+font-weight:900;
+letter-spacing:8px;
+margin-bottom:60px;
+
+font-family: 'Lobster', cursive;
+font-weight: normal;   /* Important: Lobster doesn’t use 900 */
+letter-spacing: 2px;   /* Script fonts look better with small spacing */
+
+background:linear-gradient(45deg,#00f7ff,#0088ff,#8a2be2,#00f7ff);
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:
+rgbText 6s linear infinite,
+glowPulse 2s ease-in-out infinite alternate,
+flicker 4s infinite;
+}
+
+.main-title::before{
+content:attr(data-text);
+position:absolute;
+left:3px;
+top:3px;
+z-index:-1;
+color:#0088ff;
+opacity:0.5;
+}
+
+.main-title::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-10px;
+width:100%;
+height:4px;
+background:linear-gradient(90deg,transparent,#00f7ff,transparent);
+animation:laser 3s linear infinite;
+}
+
+@keyframes rgbText{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+@keyframes glowPulse{
+from{
+text-shadow:0 0 20px #00f7ff;
+transform:scale(1);
+}
+to{
+text-shadow:
+0 0 40px #00f7ff,
+0 0 80px #0088ff,
+0 0 120px #8a2be2;
+transform:scale(1.04);
+}
+}
+
+@keyframes laser{
+0%{transform:translateX(-100%);}
+100%{transform:translateX(100%);}
+}
+
+@keyframes flicker{
+0%,18%,22%,25%,53%,57%,100%{opacity:1;}
+20%,24%,55%{opacity:0.6;}
+}
+
+/* ===== CATEGORY NAV ===== */
+.nav-scroll{
+position:relative;
+z-index:20;   /* 🔥 bring buttons above everything */
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+margin-bottom:50px;
+}
+
+.nav-scroll a{
+display:inline-block;   /* 🔥 IMPORTANT */
+margin:10px;
+padding:10px 20px;
+border-radius:10px;
+border:2px solid #00f7ff;
+color:#00f7ff;
+text-decoration:none;
+transition:0.3s;
+}
+
+.nav-scroll a:hover{
+background:#00f7ff;
+color:black;
+}
+
+/* ===== CATEGORY BOX ===== */
+.category{
+text-align:left;
+margin-bottom:80px;
+padding:40px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+box-shadow:0 0 40px rgba(0,255,255,0.3);
+}
+
+.category h2{
+font-size:30px;
+margin-bottom:20px;
+color:#00f7ff;
+text-shadow:0 0 20px #00f7ff;
+}
+
+/* ===== SUBHEADINGS ===== */
+.subheading{
+margin-top:40px;
+margin-bottom:20px;
+font-size:22px;
+color:#00ffcc;
+text-shadow:0 0 15px #00ffcc;
+}
+
+/* ===== GLOW SEPARATOR ===== */
+.separator{
+height:3px;
+margin:30px 0;
+background:linear-gradient(90deg,transparent,cyan,transparent);
+box-shadow:0 0 20px cyan;
+animation:glowLine 3s infinite alternate;
+}
+
+@keyframes glowLine{
+from{box-shadow:0 0 10px cyan;}
+to{box-shadow:0 0 30px cyan;}
+}
+
+/* ===== RULE DROPDOWN ===== */
+.rule{
+margin-bottom:15px;
+padding:15px 20px;
+border-radius:12px;
+background:rgba(0,0,0,0.6);
+border:1px solid rgba(0,255,255,0.3);
+transition:0.3s;
+}
+
+.rule:hover{
+background:rgba(0,255,255,0.1);
+transform:translateX(8px);
+box-shadow:0 0 20px #00f7ff;
+}
+
+.rule-header{
+font-size:17px;
+color:#ff4fd8;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+.main-title{
+font-size:34px;
+letter-spacing:4px;
+}
+.container{
+margin:100px 15px 60px 15px;
+}
+.category{
+padding:25px;
+}
+.rule-header{
+font-size:15px;
+}
+}
+
+.sub-body{
+    margin-top:10px;
+    margin-bottom:25px;
+    font-size:15px;
+    line-height:1.7;
+    color:#cccccc;
+    border-left:3px solid #00f7ff;
+    padding-left:15px;
+}
+
+section, .category {
+scroll-margin-top: 120px;
+}
+
+.main-title{
+pointer-events:none;   /* 🔥 prevent title blocking clicks */
 }
 </style>
 </head>
-
 <body>
 
-<h1>COMING SOON</h1>
+<canvas id="space"></canvas>
+
+<a href="index.html" class="back-btn">⬅ Back</a>
+<div class="toggle" onclick="toggleSpeed()">Warp Mode</div>
+
+<div class="container">
+
+<div class="main-title" data-text="🚀 ABOUT AAFAT GAMING 🚀">
+<img src="https://cdn.discordapp.com/emojis/1428413964349473021.gif" style="height:80px; vertical-align:middle;">
+About Aafat Gaming
+<img src="https://cdn.discordapp.com/emojis/1428413964349473021.gif" style="height:80px; vertical-align:middle;">
+</div>
+
+<div class="nav-scroll">
+<a href="#who">Who We Are</a>
+<a href="#mission">Mission</a>
+<a href="#projects">Projects</a>
+<a href="#content">Content</a>
+<a href="#future">Future</a>
+</div>
+
+<!-- WHO WE ARE -->
+<div class="category" id="who">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> Who I AM? <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">🌸 Who I Am – The Girl Behind Aafat Gaming 🌸</div>
+<div class="rule">
+<p class="sub-body">Behind the powerful name Aafat Gaming, there is a strong, passionate, and creative girl — Manmeet.</p>
+<p class="sub-body">Aafat Gaming isn’t just a username. It’s an identity built with dedication, late nights, hard work, and big dreams. While many see the competitive gamer, the server owner, the creator, and the leader, behind the screen is a girl who believed in building something different.</p>
+<p class="sub-body">I am not just a gamer, I am a creator, a designer, a planner, and a leader. From setting up servers, managing communities, to handling announcements and rules — I do it all with passion.</p>
+</div>
+</div>
+
+<!-- MISSION -->
+<div class="category" id="mission">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> Our Mission <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<div class="rule">
+<p class="sub-body">
+Our mission is simple — build one of the strongest gaming communities with fairness, creativity, and competitive spirit.
+</p>
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">We aim to provide:</div>
+<p class="sub-body">• Safe and secure gameplay</p>
+<p class="sub-body">• Advanced anti-cheat protection</p>
+<p class="sub-body">• Active moderation and fair systems</p>
+<p class="sub-body">• Engaging events and updates</p>
+<p class="sub-body">• High-quality YouTube and live content</p>
+<p class="sub-body">
+We believe gaming should be immersive, skill-based, and community-powered.
+</p>
+</div>
+</div>
+
+<!-- PROJECTS -->
+<div class="category" id="projects">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> Our Projects <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;"> ASRP – Aafat Syndicate Roleplay</div>
+<p class="sub-body">
+Our flagship project — ASRP — is a serious Minecraft roleplay server built for realistic gameplay.
+</p>
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">It features:</div>
+<p class="sub-body">• Realistic economy system</p>
+<p class="sub-body">• Structured law & crime RP</p>
+<p class="sub-body">• Balanced PvP mechanics</p>
+<p class="sub-body">• Immersive story-driven gameplay</p>
+<p class="sub-body">• Professional staff management</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;"> Competitive & Event Servers</div>
+<p class="sub-body">
+Aafat Gaming also focuses on PvP arenas, tournaments, and competitive events designed to test skill and strategy.
+</p>
+<p class="sub-body">
+We continuously innovate and improve server performance to ensure smooth gameplay.
+</p>
+</div>
+</div>
+
+<!-- CONTENT -->
+<div class="category" id="content">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> Content & Media <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<div class="rule">
+<p class="sub-body">
+Aafat Gaming delivers high-energy YouTube videos, live streams, and community-driven content.
+</p>
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">We focus on:</div>
+<p class="sub-body">• Competitive gameplay highlights</p>
+<p class="sub-body">• Roleplay episodes</p>
+<p class="sub-body">• Live community interaction</p>
+<p class="sub-body">• Giveaways & events</p>
+<p class="sub-body">
+Our content is designed to entertain, inspire, and grow the community.
+</p>
+</div>
+</div>
+
+<!-- FUTURE -->
+<div class="category" id="future">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> The Future of Aafat Gaming <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<div class="rule">
+<p class="sub-body">
+We are constantly expanding. New features, new systems, and new experiences are always in development.
+</p>
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Our long-term vision includes:</div>
+<p class="sub-body">• Expanding into multiple game modes</p>
+<p class="sub-body">• Advanced RP expansions</p>
+<p class="sub-body">• Larger community events</p>
+<p class="sub-body">• Professional esports-style competitions</p>
+<p class="sub-body">
+Aafat Gaming is not temporary — it’s built to grow stronger every season.
+</p>
+</div>
+</div>
+
+<!-- FINAL MESSAGE -->
+<div class="category">
+<h2><img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"> Final Message <img src="https://cdn.discordapp.com/emojis/1428414003343921333.gif" style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">If you're looking for:</div>
+<p class="sub-body">✔ Competitive gameplay</p>
+<p class="sub-body">✔ Serious roleplay</p>
+<p class="sub-body">✔ Strong moderation</p>
+<p class="sub-body">✔ A loyal gaming community</p>
+<p class="sub-body">Then welcome to Aafat Gaming.</p>
+<p class="sub-body">Play smart. Stay loyal. Build the legacy.</p>
+</div>
+</div></div>
+
+<script>
+
+/* STAR BACKGROUND */
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+});
+
+let stars=[];
+let speedMultiplier=1;
+
+class Star{
+constructor(){this.reset();}
+reset(){
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
+this.size=Math.random()*2;
+this.speed=Math.random()*1+0.5;
+}
+update(){
+this.y+=this.speed*speedMultiplier;
+if(this.y>canvas.height){
+this.y=0;
+this.x=Math.random()*canvas.width;
+}
+}
+draw(){
+ctx.beginPath();
+ctx.fillStyle="white";
+if(speedMultiplier>1){
+ctx.fillRect(this.x,this.y,this.size,this.size*4);
+}else{
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+}
+}
+
+for(let i=0;i<500;i++){stars.push(new Star());}
+
+function animate(){
+ctx.fillStyle="rgba(0,0,0,0.5)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{s.update();s.draw();});
+requestAnimationFrame(animate);
+}
+animate();
+
+function toggleSpeed(){
+speedMultiplier=speedMultiplier===1?6:1;
+}
+
+</script>
 
 </body>
 </html>
