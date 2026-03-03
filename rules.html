@@ -2,53 +2,704 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Galaxy Coming Soon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming | Rules</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Lobster&display=swap" rel="stylesheet">
 
 <style>
+
+/* ===== SMOOTH SCROLL ===== */
+html{ scroll-behavior:smooth; }
+
+/* ===== BASE ===== */
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    overflow:hidden;
-    color:white;
-    font-family:sans-serif;
+margin:0;
+font-family:'Orbitron',sans-serif;
+background:radial-gradient(circle at center,#050510,#000);
+color:white;
+overflow-x:hidden;
 }
 
-/* stars */
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background:url("https://www.transparenttextures.com/patterns/stardust.png");
-    animation: move 60s linear infinite;
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+pointer-events:none;
 }
 
-@keyframes move{
-    from{transform:translate(0,0);}
-    to{transform:translate(-1000px,-1000px);}
+/* ===== NAV BUTTONS ===== */
+.back-btn, .toggle{
+position:fixed;
+top:20px;
+padding:8px 16px;
+border-radius:8px;
+text-decoration:none;
+border:2px solid #00f7ff;
+color:#00f7ff;
+box-shadow:0 0 15px #00f7ff;
+transition:0.3s;
+cursor:pointer;
+z-index:10;
 }
 
-h1{
-    font-size:70px;
-    letter-spacing:10px;
-    text-align:center;
-    animation: glow 3s infinite alternate;
+.back-btn{ left:20px; }
+.toggle{ right:20px; }
+
+.back-btn:hover,
+.toggle:hover{
+background:#00f7ff;
+color:black;
 }
 
-@keyframes glow{
-    from{text-shadow:0 0 20px cyan;}
-    to{text-shadow:0 0 60px magenta;}
+/* ===== CONTAINER ===== */
+.container{
+max-width:1100px;
+margin:120px auto 80px auto;
+padding:20px;
+text-align:center;
+}
+
+/* ===== INSANE TITLE ===== */
+.main-title{
+position:relative;
+display:inline-block;
+font-size:64px;
+font-weight:900;
+letter-spacing:8px;
+margin-bottom:60px;
+
+font-family: 'Lobster', cursive;
+font-weight: normal;   /* Important: Lobster doesn’t use 900 */
+letter-spacing: 2px;   /* Script fonts look better with small spacing */
+
+background:linear-gradient(45deg,#00f7ff,#0088ff,#8a2be2,#00f7ff);
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:
+rgbText 6s linear infinite,
+glowPulse 2s ease-in-out infinite alternate,
+flicker 4s infinite;
+}
+
+.main-title::before{
+content:attr(data-text);
+position:absolute;
+left:3px;
+top:3px;
+z-index:-1;
+color:#0088ff;
+opacity:0.5;
+}
+
+.main-title::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-10px;
+width:100%;
+height:4px;
+background:linear-gradient(90deg,transparent,#00f7ff,transparent);
+animation:laser 3s linear infinite;
+}
+
+@keyframes rgbText{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+@keyframes glowPulse{
+from{
+text-shadow:0 0 20px #00f7ff;
+transform:scale(1);
+}
+to{
+text-shadow:
+0 0 40px #00f7ff,
+0 0 80px #0088ff,
+0 0 120px #8a2be2;
+transform:scale(1.04);
+}
+}
+
+@keyframes laser{
+0%{transform:translateX(-100%);}
+100%{transform:translateX(100%);}
+}
+
+@keyframes flicker{
+0%,18%,22%,25%,53%,57%,100%{opacity:1;}
+20%,24%,55%{opacity:0.6;}
+}
+
+/* ===== CATEGORY NAV ===== */
+.nav-scroll{
+position:relative;
+z-index:20;   /* 🔥 bring buttons above everything */
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+margin-bottom:50px;
+}
+
+.nav-scroll a{
+display:inline-block;   /* 🔥 IMPORTANT */
+margin:10px;
+padding:10px 20px;
+border-radius:10px;
+border:2px solid #00f7ff;
+color:#00f7ff;
+text-decoration:none;
+transition:0.3s;
+}
+
+.nav-scroll a:hover{
+background:#00f7ff;
+color:black;
+}
+
+/* ===== CATEGORY BOX ===== */
+.category{
+text-align:left;
+margin-bottom:80px;
+padding:40px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+box-shadow:0 0 40px rgba(0,255,255,0.3);
+}
+
+.category h2{
+font-size:30px;
+margin-bottom:20px;
+color:#00f7ff;
+text-shadow:0 0 20px #00f7ff;
+}
+
+/* ===== SUBHEADINGS ===== */
+.subheading{
+margin-top:40px;
+margin-bottom:20px;
+font-size:22px;
+color:#00ffcc;
+text-shadow:0 0 15px #00ffcc;
+}
+
+/* ===== GLOW SEPARATOR ===== */
+.separator{
+height:3px;
+margin:30px 0;
+background:linear-gradient(90deg,transparent,cyan,transparent);
+box-shadow:0 0 20px cyan;
+animation:glowLine 3s infinite alternate;
+}
+
+@keyframes glowLine{
+from{box-shadow:0 0 10px cyan;}
+to{box-shadow:0 0 30px cyan;}
+}
+
+/* ===== RULE DROPDOWN ===== */
+.rule{
+margin-bottom:15px;
+padding:15px 20px;
+border-radius:12px;
+background:rgba(0,0,0,0.6);
+border:1px solid rgba(0,255,255,0.3);
+transition:0.3s;
+}
+
+.rule:hover{
+background:rgba(0,255,255,0.1);
+transform:translateX(8px);
+box-shadow:0 0 20px #00f7ff;
+}
+
+.rule-header{
+font-size:17px;
+color:#ff4fd8;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+.main-title{
+font-size:34px;
+letter-spacing:4px;
+}
+.container{
+margin:100px 15px 60px 15px;
+}
+.category{
+padding:25px;
+}
+.rule-header{
+font-size:15px;
+}
+}
+
+.sub-body{
+    margin-top:10px;
+    margin-bottom:25px;
+    font-size:15px;
+    line-height:1.7;
+    color:#cccccc;
+    border-left:3px solid #00f7ff;
+    padding-left:15px;
+}
+
+section, .category {
+scroll-margin-top: 120px;
+}
+
+.main-title{
+pointer-events:none;   /* 🔥 prevent title blocking clicks */
 }
 </style>
 </head>
-
 <body>
 
-<h1>COMING SOON</h1>
+<canvas id="space"></canvas>
+
+<a href="index.html" class="back-btn">⬅ Back</a>
+<div class="toggle" onclick="toggleSpeed()">Warp Mode</div>
+
+<div class="container">
+
+<div class="main-title" data-text="⚖ AAFAT GAMING RULES ⚖">
+<img src="https://cdn.discordapp.com/emojis/1428413964349473021.gif"style="height:80px; vertical-align:middle;"> Aafat Gaming Rules <img src="https://cdn.discordapp.com/emojis/1428413964349473021.gif"style="height:80px; vertical-align:middle;">
+</div>
+
+<div class="nav-scroll">
+<a href="#youtube">YouTube</a>
+<a href="#discord">Discord</a>
+<a href="#asrp">ASRP</a>
+</div>
+
+<!-- YOUTUBE -->
+<div class="category" id="youtube">
+<h2><img src="https://cdn.discordapp.com/emojis/1433851093229768735.gif"style="height:40px; vertical-align:middle;"> YouTube Rules <img src="https://cdn.discordapp.com/emojis/1433851093229768735.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> CORE COMMUNITY RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Respect the Grind</div>
+        <p class="sub-body">Respect the creator, moderators, and fellow viewers. Hate speech, discrimination, harassment, or personal attacks will result in immediate moderation action.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Toxic Energy</div>
+        <p class="sub-body">Friendly banter is allowed. Targeted harassment, bullying, or repeated negativity is not. Keep the vibes competitive — not destructive.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No NSFW Content</div>
+        <p class="sub-body">Inappropriate language, sexual comments, or explicit content in comments or usernames will not be tolerated.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Impersonation</div>
+        <p class="sub-body">Pretending to be the creator, staff, or other members is strictly prohibited.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Fake Giveaways / Scams</div>
+        <p class="sub-body">Posting scam links, crypto scams, fake giveaways, or suspicious links will result in instant permanent ban.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 💬 COMMENT SECTION RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Spam Flooding</div>
+        <p class="sub-body">Avoid repetitive messages, emoji spam, ALL CAPS spam, copy-paste chains, or irrelevant comments.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Self Promotion</div>
+        <p class="sub-body">Do not advertise your YouTube channel, Discord server, Instagram, or any platform unless officially allowed.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Stay On Topic</div>
+        <p class="sub-body">Keep discussions related to the video. Off-topic arguments or drama will be removed.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Sensitive Debates</div>
+        <p class="sub-body">Religion, politics, global conflicts, or controversial debates are not allowed in comments.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Spoilers (If Applicable)</div>
+        <p class="sub-body">If the content involves story-based games, avoid posting spoilers without warning.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 🔥 LIVE STREAM RULEBOOK <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Respect Live Flow</div>
+        <p class="sub-body">Do not interrupt the stream with repeated demands, spam, or unrelated messages.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Backseat Gaming (Unless Asked)</div>
+        <p class="sub-body">Suggestions are welcome. Ordering, insulting, or repeatedly correcting gameplay is not.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Chat Wars</div>
+        <p class="sub-body">Do not start arguments or provoke others in live chat.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Stream Disruption</div>
+        <p class="sub-body">Sound spam, trolling behavior, fake emergency messages, or attempts to derail the stream will result in timeout or ban.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Respect Personal Boundaries</div>
+        <p class="sub-body">Avoid asking private questions about personal life, income, relationships, or location.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Clip Responsibly</div>
+        <p class="sub-body">If clipping streams, do not edit content to spread misinformation or create drama.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 📜 YOUTUBE TERMS & CONDITIONS 📜 <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Acceptance of Terms</div>
+        <p class="sub-body">By accessing this YouTube channel, watching videos, participating in live chats, or interacting in comments, you agree to follow all rules, policies, and moderation decisions stated here.</p>
+        <p class="sub-body">If you do not agree, you may stop viewing the channel at any time.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Content Ownership</div>
+        <p class="sub-body">All videos, livestreams, thumbnails, branding elements, and channel content belong to the channel owner.</p>
+        <p class="sub-body">Unauthorized reuploads, content theft, or misuse of clips without permission may result in copyright action.</p>
+        <p class="sub-body">Clipping streams for highlights is allowed only if proper credit is given.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Donations & Memberships</div>
+        <p class="sub-body">• Donations are voluntary and non-refundable.</p>
+        <p class="sub-body">• Sending money does not grant special privileges.</p>
+        <p class="sub-body">• Membership perks are subject to change.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Platform Compliance</div>
+        <p class="sub-body">This channel operates under YouTube’s official Terms of Service and Community Guidelines.</p>
+        <p class="sub-body">Any violation of YouTube policies may result in reporting and permanent removal from the community.</p>
+</div>
+</div>
+
+<!-- DISCORD -->
+<div class="category" id="discord">
+<h2><img src="https://cdn.discordapp.com/emojis/1433851103581175950.gif"style="height:40px; vertical-align:middle;"> Discord Rules <img src="https://cdn.discordapp.com/emojis/1433851103581175950.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 💎 GENERAL RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Respect All Players</div>
+        <p class="sub-body">
+        Every member here is part of the squad. Trash talk is fine in fun limits, but harassment, discrimination, or targeting someone personally is not allowed. Keep it competitive, not toxic.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No NSFW Content</div>
+        <p class="sub-body">
+        This is a gaming community, keep it clean. NSFW content, inappropriate PFPS, usernames, nicknames, or statuses are strictly prohibited.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Zero Toxicity Policy</div>
+        <p class="sub-body">
+        Racism, slurs, threats, extreme abusive language, or repeated toxic behavior will result in warnings, mutes, or bans. Skill issue? Improve. Don’t insult.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 💬 CHAT RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Spam Attacks</div>
+        <p class="sub-body">
+        No message flooding, excessive CAPS, emoji spam, lyric spam, copy-paste walls, link spam, GIF floods, or reaction spam. Keep chat readable like a clean HUD.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Keep It Clean</div>
+        <p class="sub-body">
+        No NSFW jokes, images, or inappropriate language in any channel.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Public Drama</div>
+        <p class="sub-body">
+        Got beef? Take it to DMs. Server chat is not a battlefield for personal fights.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Sensitive Wars</div>
+        <p class="sub-body">
+        Religion, politics, or international conflict debates are disabled here. This server is for gaming, not global arguments.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Unauthorized Promotion</div>
+        <p class="sub-body">
+        No advertising other servers, YouTube channels, or outside platforms unless you have the required role and use the designated promo channel.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> 🎙 VOICE CHANNEL RULES <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Voice Trolling</div>
+        <p class="sub-body">
+        Don’t annoy, interrupt, or deliberately disturb others in VC.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">No Earrape / Sound Abuse</div>
+        <p class="sub-body">
+        Loud screaming, mic distortion, inappropriate songs, or soundboards used to disturb others will result in instant mute.</p>
+</div>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Respect in VC</div>
+        <p class="sub-body">
+        Same respect rules apply in voice chat. Competitive energy is fine, toxicity is not.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> ⚖ DISCORD TOS ENFORCEMENT <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">T&C</div>
+        <p class="sub-body">This server operates under Discord’s official Terms of Service and Community Guidelines. By joining this server, you automatically agree to follow Discord’s platform rules in addition to our server rules.</p>
+        <p class="sub-body">Any violation of Discord’s Terms — including but not limited to harassment, hate speech, threats, impersonation, illegal content, exploitation, or malicious activity — will result in immediate disciplinary action.</p>
+        <p class="sub-body">Severe violations may lead to:</p>
+        <p class="sub-body">• Instant permanent ban</p>
+        <p class="sub-body">• Report to Discord Trust & Safety</p>
+        <p class="sub-body">• Removal without warning</p>
+        <p class="sub-body">• Blacklisting from future community access</p>
+        <p class="sub-body">Staff decisions regarding serious violations are final.</p>
+        <p class="sub-body">We are committed to maintaining a safe, lawful, and respectful environment for all members. Failure to comply will result in strict consequences.</p>
+</div>
+</div>
+
+<!-- ASRP -->
+<div class="category" id="asrp">
+<h2><img src="https://cdn.discordapp.com/emojis/1432045771791929536.gif"style="height:40px; vertical-align:middle;"> ASRP – Aafat Syndicate Roleplay <img src="https://cdn.discordapp.com/emojis/1432045771791929536.gif"style="height:40px; vertical-align:middle;"></h2>
+<div class="separator"></div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> Respect All Players (OOC & IC) <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+        <p class="sub-body">Treat everyone with respect both In Character (IC) and Out of Character (OOC).</p>
+        <p class="sub-body">Harassment, racism, discrimination, threats, or hate speech will not be tolerated under any circumstances.</p>
+        <p class="sub-body">Toxic behavior = Strict action.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Hacking or Unfair Modifications <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">The following are strictly prohibited:</div>
+        <p class="sub-body">• Hack clients</p>
+        <p class="sub-body">• X-ray</p>
+        <p class="sub-body">• Fly / Speed hacks</p>
+        <p class="sub-body">• Auto-clickers / Macros</p>
+        <p class="sub-body">• Freecam</p>
+        <p class="sub-body">• Radar / Illegal minimaps</p>
+        <p class="sub-body">• Any unfair PvP modification</p>
+        <p class="sub-body">ASRP is skill + roleplay based.</p>
+        <p class="sub-body">Cheating = Permanent Ban.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Powergaming / Metagaming <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Powergaming – Forcing unrealistic actions or outcomes on other players without giving them a fair chance to respond.</p>
+        <p class="sub-body">Metagaming – Using OOC information for IC advantage.</p>
+        <p class="sub-body">Roleplay must remain realistic and immersive at all times.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Random Killing (RDM) / Random Raiding <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Killing or attacking players without valid RP reason is not allowed.</p>
+        <p class="sub-body">Every conflict must have proper roleplay buildup.</p>
+        <p class="sub-body">No random robberies without RP scenario.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Bug Exploiting <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Exploiting glitches, duplication bugs, or server errors for advantage is strictly forbidden.</p>
+        <p class="sub-body">Report all bugs immediately.</p>
+        <p class="sub-body">Abuse = Severe punishment.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Impersonation <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Do not pretend to be:</div>
+        <p class="sub-body">• Staff</p>
+        <p class="sub-body">• Admin</p>
+        <p class="sub-body">• Content Creator</p>
+        <p class="sub-body">• Syndicate Leader</p>
+        <p class="sub-body">• Another Player</p>
+        <p class="sub-body">Identity fraud = Ban.</p>        
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> Maintain RP Standards <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">• Stay in character during RP situations</p>
+        <p class="sub-body">• Do not break immersion</p>
+        <p class="sub-body">• Use realistic names & skins</p>
+        <p class="sub-body">• Avoid troll builds or meme behavior</p>
+        <p class="sub-body">This is Aafat Syndicate Roleplay, not casual survival.</p>       
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No IRL Trading <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Real money trading of:</div>
+        <p class="sub-body">• In-game money</p>
+        <p class="sub-body">• Syndicate ranks</p>
+        <p class="sub-body">• Items</p>
+        <p class="sub-body">• Properties</p>
+        <p class="sub-body">Is strictly prohibited.</p>        
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> No Lag Machines / Server Abuse <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Lag machines, excessive entity stacking, redstone abuse, or chunk overload builds will be removed.</p>
+        <p class="sub-body">Repeated offense = Removal from server.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> Chat Language Policy <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Global Chat → English / Hinglish only</p>
+        <p class="sub-body">Private Messages → Any language allowed</p>
+        <p class="sub-body">Keep communication clear for all players.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> Respect Staff & RP Admins <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">Staff decisions are final.</p>
+        <p class="sub-body">Arguing publicly or harassing staff will result in punishment.</p>
+        <p class="sub-body">If you disagree — use the proper appeal system.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> PUNISHMENT SYSTEM <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">Breaking rules may result in:</div>
+        <p class="sub-body">• Warning</p>
+        <p class="sub-body">• RP Jail</p>
+        <p class="sub-body">• Fine (IC)</p>
+        <p class="sub-body">• Mute</p>
+        <p class="sub-body">• Kick</p>
+        <p class="sub-body">• Temporary Ban</p>
+        <p class="sub-body">• Permanent Ban</p>
+        <p class="sub-body">• Rank / Asset Removal</p>
+        <p class="sub-body">Severe violations = Immediate permanent removal.</p>        
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> APPEALS <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">If you believe your punishment was unfair:</div>
+        <p class="sub-body">Create a support ticket in the official ASRP Discord. Provide proper explanation and evidence.</p>
+        <p class="sub-body">False appeals will reduce your chances.</p>
+</div>
+
+<h3 class="subheading"><img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"> FINAL STATEMENT <img src="https://cdn.discordapp.com/emojis/1427775984727490660.gif"style="height:40px; vertical-align:middle;"></h3>
+
+<div class="rule">
+<div class="rule-header"><img src="https://cdn.discordapp.com/emojis/1428413929994063942.gif"style="height:40px; vertical-align:middle;">💎</div>
+        <p class="sub-body">By playing on ASRP – Aafat Syndicate Roleplay, you agree to follow all server rules and policies.</p>
+        <p class="sub-body">This is a serious RP server.</p>
+        <p class="sub-body">Play smart. Roleplay realistically. Respect the Syndicate.</p>
+</div>
+</div>
+
+<script>
+
+/* STAR BACKGROUND */
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+});
+
+let stars=[];
+let speedMultiplier=1;
+
+class Star{
+constructor(){this.reset();}
+reset(){
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
+this.size=Math.random()*2;
+this.speed=Math.random()*1+0.5;
+}
+update(){
+this.y+=this.speed*speedMultiplier;
+if(this.y>canvas.height){
+this.y=0;
+this.x=Math.random()*canvas.width;
+}
+}
+draw(){
+ctx.beginPath();
+ctx.fillStyle="white";
+if(speedMultiplier>1){
+ctx.fillRect(this.x,this.y,this.size,this.size*4);
+}else{
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+}
+}
+
+for(let i=0;i<500;i++){stars.push(new Star());}
+
+function animate(){
+ctx.fillStyle="rgba(0,0,0,0.5)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{s.update();s.draw();});
+requestAnimationFrame(animate);
+}
+animate();
+
+function toggleSpeed(){
+speedMultiplier=speedMultiplier===1?6:1;
+}
+
+</script>
 
 </body>
 </html>
