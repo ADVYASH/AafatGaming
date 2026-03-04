@@ -39,9 +39,98 @@ canvas{display:block;}
 #backBtn:hover{
     background:#444;
 }
+
+#startScreen{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#0a0a12;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:200;
+}
+
+#startScreen h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+#startScreen input{
+    padding:10px;
+    font-size:18px;
+    border:none;
+    border-radius:6px;
+    margin-bottom:15px;
+}
+
+#startScreen button{
+    padding:10px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:6px;
+    background:#ff4444;
+    color:white;
+    cursor:pointer;
+}
+
+#startScreen button:hover{
+    background:#ff2222;
+}
+
+#gameOverScreen{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#0a0a12;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:250;
+}
+
+#gameOverScreen h1{
+    font-size:50px;
+    margin-bottom:10px;
+    color:#ff4444;
+}
+
+#gameOverScreen p{
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+#gameOverScreen button{
+    padding:12px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:6px;
+    background:#00c853;
+    color:white;
+    cursor:pointer;
+}
+
+#gameOverScreen button:hover{
+    background:#00a844;
+}
 </style>
 </head>
 <body>
+
+<div id="startScreen">
+    <h1>Battle Royale Arena</h1>
+    <input type="text" id="playerName" placeholder="Enter Your Name">
+    <button onclick="startGame()">Start Game</button>
+</div>
+
+<div id="gameOverScreen" style="display:none;">
+    <h1>💀 Game Over</h1>
+    <p id="finalStats"></p>
+    <button onclick="restartGame()">Restart Game</button>
+</div>
+
 <div id="backBtn" onclick="goBack()">⬅ Back</div>
 
 <div id="ui">
@@ -54,11 +143,19 @@ Health: <span id="health">100</span>
 <canvas id="game"></canvas>
 
 <script>
+let playerName = "Unknown";
+let gameStarted = false;
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
+
+window.addEventListener("resize",()=>{
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+});
 
 /* ===== MAP SETTINGS ===== */
 
@@ -95,6 +192,9 @@ window.addEventListener("keydown",e=>keys[e.key.toLowerCase()]=true);
 window.addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
 
 canvas.addEventListener("click",e=>{
+
+if(!gameStarted) return;
+
     let mx = e.clientX + camera.x;
     let my = e.clientY + camera.y;
     let angle = Math.atan2(my-player.y,mx-player.x);
@@ -107,6 +207,22 @@ canvas.addEventListener("click",e=>{
         vy:Math.sin(angle)*12
     });
 });
+
+function startGame(){
+
+    let nameInput = document.getElementById("playerName").value.trim();
+
+    if(nameInput === ""){
+        alert("Please enter your name");
+        return;
+    }
+
+    playerName = nameInput;
+
+    document.getElementById("startScreen").style.display = "none";
+
+    gameStarted = true;
+}
 
 /* ===== SPAWN ENEMIES ===== */
 
@@ -147,22 +263,32 @@ player.x = Math.max(player.size,Math.min(mapWidth-player.size,player.x));
 player.y = Math.max(player.size,Math.min(mapHeight-player.size,player.y));
 
 /* BULLETS */
-bullets.forEach((b,i)=>{
-    b.x+=b.vx;
-    b.y+=b.vy;
+for(let i = bullets.length - 1; i >= 0; i--){
 
-    enemies.forEach((e,ei)=>{
-        if(e.alive && Math.hypot(b.x-e.x,b.y-e.y)<20){
-            e.health-=50;
+    let b = bullets[i];
+
+    b.x += b.vx;
+    b.y += b.vy;
+
+    for(let ei = enemies.length - 1; ei >= 0; ei--){
+
+        let e = enemies[ei];
+
+        if(e.alive && Math.hypot(b.x-e.x,b.y-e.y) < 20){
+
+            e.health -= 50;
             bullets.splice(i,1);
-            if(e.health<=0){
-                e.alive=false;
+
+            if(e.health <= 0){
+                e.alive = false;
                 enemies.splice(ei,1);
-                score+=10;
+                score += 10;
             }
+
+            break;
         }
-    });
-});
+    }
+}
 
 /* ENEMY AI */
 enemies.forEach(e=>{
@@ -193,10 +319,21 @@ document.getElementById("score").innerText=score;
 document.getElementById("enemyLeft").innerText=enemies.length;
 document.getElementById("health").innerText=Math.floor(player.health);
 
-if(player.health<=0){
+if(player.health <= 0 && player.alive){
+
+    player.alive = false;
+    bullets = [];
+
     sendScoreToDiscord(level, score, enemies.length);
-    alert("Game Over! Final Score: "+score);
-    location.reload();
+
+    gameStarted = false;
+
+    document.getElementById("gameOverScreen").style.display = "flex";
+
+    document.getElementById("finalStats").innerText =
+        "Player: " + playerName +
+        " | Level: " + level +
+        " | Score: " + score;
 }
 }
 
@@ -259,31 +396,71 @@ ctx.restore();
 function sendScoreToDiscord(level, score, enemiesLeft){
 
 fetch("https://discord.com/api/webhooks/1478499282637029486/ZAKKDMogjCpS9bu-mQ_yqD8y7u6HvRL0ayv3J5jY6YVvRqVgHYDrbwuY6zxsuZNwTuWG", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        username: "1.Battle Royale Arena : Last Survivor",
-        embeds: [{
-            title: "🏆 Game Finished!",
-            color: 16711680,
-            fields: [
-                { name: "Level", value: level.toString(), inline: true },
-                { name: "Score", value: score.toString(), inline: true },
-                { name: "Enemies Left", value: enemiesLeft.toString(), inline: true }
-            ],
-            timestamp: new Date()
-        }]
-    })
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+username:"🎮 Battle Royale Arena",
+embeds:[{
+
+title:"🏆 Battle Royale Leaderboard",
+description:"A player has finished the arena battle!",
+
+color:16711680,
+
+thumbnail:{
+url:"https://cdn.discordapp.com/attachments/1311247446051131453/1478830753507971253/9cf6c715-62f3-43be-a2cb-14f2b344e70e.png?ex=69a9d3f6&is=69a88276&hm=37d97d984626d5d2ab2ca10b8d40ec5880893de42b58b1b16f2bee3606e41f2e&"
+},
+
+image:{
+url:"https://cdn.discordapp.com/attachments/1311247446051131453/1478830748659093665/f954865a-c608-4bca-ad9a-7e90b00f28eb.png?ex=69a9d3f5&is=69a88275&hm=88ba7a1068298b68f70a6e2e6ff6b8f29b22b21a31944a285202e1960a08f5ee&"
+},
+
+fields:[
+{
+name:"👤 Player",
+value:playerName,
+inline:true
+},
+{
+name:"🎯 Level Reached",
+value:level.toString(),
+inline:true
+},
+{
+name:"💰 Score",
+value:score.toString(),
+inline:true
+},
+{
+name:"💀 Enemies Left",
+value:enemiesLeft.toString(),
+inline:true
+}
+],
+
+footer:{
+text:"Battle Royale Arena • HTML5 Game"
+},
+
+timestamp:new Date()
+
+}]
+})
 });
+
 }
 
 let animationId;
 
 function loop(){
-    update();
-    draw();
+
+    if(gameStarted){
+        update();
+        draw();
+    }
+
     animationId = requestAnimationFrame(loop);
 }
 
@@ -292,6 +469,10 @@ loop();
 function goBack(){
     cancelAnimationFrame(animationId);
     window.location.href = "minigames.html";
+}
+
+function restartGame(){
+    location.reload();
 }
 </script>
 </body>
