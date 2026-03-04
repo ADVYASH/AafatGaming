@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Snake Arena Neon</title>
+
+<style>
+
+body{
+margin:0;
+background:#050510;
+font-family:Arial;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+position:relative;
+}
+
+#startScreen{
+text-align:center;
+}
+
+input{
+padding:10px;
+font-size:18px;
+border:none;
+border-radius:6px;
+}
+
+button{
+padding:10px 20px;
+font-size:18px;
+border:none;
+background:#00ffcc;
+cursor:pointer;
+border-radius:6px;
+}
+
+canvas{
+background:#090920;
+border:3px solid #00ffee;
+box-shadow:0 0 25px #00ffee;
+display:none;
+}
+
+#ui{
+display:none;
+margin-top:10px;
+}
+
+#leaderboard{
+margin-top:15px;
+font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+<div id="gameOverScreen" style="
+display:none;
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family:Arial;
+color:white;
+">
+
+<h1 style="font-size:50px;color:#ff3b3b">GAME OVER</h1>
+
+<div id="finalScore" style="font-size:25px;margin:10px"></div>
+
+<button onclick="restartGame()" style="
+padding:12px 25px;
+font-size:18px;
+border:none;
+background:#00ffee;
+color:black;
+border-radius:6px;
+cursor:pointer;
+box-shadow:0 0 10px #00ffee;
+">
+Restart
+</button>
+
+</div>
+
+<div id="startScreen">
+
+<h1>🌌 Snake Arena Neon</h1>
+
+<input id="playerName" placeholder="Enter your name">
+<br><br>
+<button onclick="startGame()">Start Game</button>
+
+</div>
+
+<canvas id="game" width="500" height="500"></canvas>
+
+<div id="ui">
+
+<div id="score">Score: 0</div>
+<div>Move: WASD</div>
+
+<div id="leaderboard"></div>
+
+</div>
+
+<script>
+
+const webhookURL="https://discord.com/api/webhooks/1478816282936868984/1JexKpUuJKOoSEj8g40DpiXFz_WhOqjR4zrkwfFbbSs4V1xeEbusM-UZOqSvXeWwQ9R5";
+
+let player="";
+
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+const grid=20;
+
+let snake;
+let dx;
+let dy;
+let food;
+let powerup;
+let diamond=null;
+let redEaten=0;
+
+const diamondScores=[
+3500,4000,4500,5000,5500,6000,6500,7000,
+7500,8000,8500,9000,9500,10000
+];
+let score;
+
+let diamondsCollected = 0;
+let boostUsed = false;
+
+let speed=100;
+let gameOver=false;
+
+let boost=false;
+let boostTimer=0;
+
+function startGame(){
+
+player=document.getElementById("playerName").value;
+
+if(player=="") return alert("Enter name");
+
+document.getElementById("startScreen").style.display="none";
+canvas.style.display="block";
+document.getElementById("ui").style.display="block";
+
+document.getElementById("playerName").blur(); // <-- FIX
+window.focus(); // <-- ensures keyboard input
+
+restart();
+
+}
+
+function restartGame(){
+
+document.getElementById("gameOverScreen").style.display="none";
+
+restart();
+
+}
+
+function restart(){
+
+snake=[{x:10,y:10}];
+
+dx=1;
+dy=0;
+
+food=spawn();
+powerup=spawn();
+
+score=0;
+
+boost=false;
+boostTimer=200;
+
+gameOver=false;
+
+}
+
+function spawn(){
+
+return{
+
+x:Math.floor(Math.random()*25),
+y:Math.floor(Math.random()*25)
+
+};
+
+}
+
+document.addEventListener("keydown",e=>{
+
+let key=e.key.toLowerCase();
+
+if(key=="w" && dy!=1){dx=0;dy=-1;}
+if(key=="s" && dy!=-1){dx=0;dy=1;}
+if(key=="a" && dx!=1){dx=-1;dy=0;}
+if(key=="d" && dx!=-1){dx=1;dy=0;}
+
+});
+
+function update(){
+
+if(gameOver)return;
+
+let head={
+
+x:snake[0].x+dx,
+y:snake[0].y+dy
+
+};
+
+if(head.x<0||head.y<0||head.x>=25||head.y>=25){
+
+endGame();
+return;
+
+}
+
+for(let s of snake){
+
+if(s.x==head.x&&s.y==head.y){
+
+endGame();
+return;
+
+}
+
+}
+
+snake.unshift(head);
+
+if(head.x==food.x&&head.y==food.y){
+
+if(boost){
+score+=250; // 25 x10
+}else{
+score+=25;
+}
+
+redEaten++;
+
+if(redEaten % 7 === 0){
+diamond = spawn();
+}
+
+food=spawn();
+
+}else{
+
+snake.pop();
+
+}
+
+if(head.x==powerup.x&&head.y==powerup.y){
+
+boost=true;
+boostUsed = true;
+boostTimer=100;
+speed=50;
+
+powerup=spawn();
+
+}
+
+if(diamond && head.x==diamond.x && head.y==diamond.y){
+
+let randomScore = diamondScores[
+Math.floor(Math.random()*diamondScores.length)
+];
+
+score += randomScore;
+
+diamondsCollected++;
+
+diamond = null;
+
+}
+
+if(boost){
+
+boostTimer--;
+
+if(boostTimer<=0){
+
+boost=false;
+speed=100;
+
+}
+
+}
+
+document.getElementById("score").innerText=
+"Score: "+score+(boost?" ⚡BOOST ACTIVE":"");
+
+}
+
+function draw(){
+
+ctx.fillStyle="#090920";
+ctx.fillRect(0,0,500,500);
+
+ctx.shadowBlur=20;
+
+/* RED FOOD */
+ctx.shadowColor="#ff004c";
+ctx.fillStyle="#ff004c";
+ctx.fillRect(food.x*grid,food.y*grid,grid-2,grid-2);
+
+/* SNAKE */
+ctx.shadowColor=boost?"#ffff00":"#00ffee";
+ctx.fillStyle=boost?"#ffff00":"#00ffee";
+
+snake.forEach(s=>{
+ctx.fillRect(s.x*grid,s.y*grid,grid-2,grid-2);
+});
+
+/* POWERUP */
+ctx.shadowColor="#ffd700";
+ctx.fillStyle="#ffd700";
+ctx.fillRect(powerup.x*grid,powerup.y*grid,grid-2,grid-2);
+
+/* 💎 DIAMOND */
+if(diamond){
+
+ctx.shadowColor="#00ffff";
+ctx.fillStyle="#00ffff";
+
+ctx.beginPath();
+ctx.moveTo(diamond.x*grid+10, diamond.y*grid);
+ctx.lineTo(diamond.x*grid+20, diamond.y*grid+10);
+ctx.lineTo(diamond.x*grid+10, diamond.y*grid+20);
+ctx.lineTo(diamond.x*grid, diamond.y*grid+10);
+ctx.closePath();
+
+ctx.fill();
+
+}
+
+}
+
+function loop(){
+
+update();
+draw();
+
+}
+
+setInterval(loop,100);
+
+function endGame(){
+
+gameOver=true;
+
+let rank = saveScore();
+sendDiscord(rank);
+
+document.getElementById("finalScore").innerText=
+"Final Score: "+score;
+
+document.getElementById("gameOverScreen").style.display="flex";
+
+}
+
+function saveScore(){
+
+let board=JSON.parse(localStorage.getItem("snakeboard")||"[]");
+
+board.push({name:player,score:score});
+
+board.sort((a,b)=>b.score-a.score);
+
+let rank = board.findIndex(p => p.name===player && p.score===score) + 1;
+
+board=board.slice(0,5);
+
+localStorage.setItem("snakeboard",JSON.stringify(board));
+
+showLeaderboard();
+
+return rank;
+
+}
+
+function showLeaderboard(){
+
+let board=JSON.parse(localStorage.getItem("snakeboard")||"[]");
+
+let html="<h3>🏆 Leaderboard</h3>";
+
+board.forEach((p,i)=>{
+
+html+=`${i+1}. ${p.name} - ${p.score}<br>`;
+
+});
+
+document.getElementById("leaderboard").innerHTML=html;
+
+}
+
+function sendDiscord(rank){
+
+fetch(webhookURL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+embeds:[{
+
+title:"# Snake Game #",
+
+color:16753920,
+
+thumbnail:{
+url:"https://cdn.discordapp.com/attachments/1311247446051131453/1478823893698609302/a5f8c7d5-d0e1-43f8-ae34-afdd711b3012.png?ex=69a9cd93&is=69a87c13&hm=17a7a6494c1b60195021482c3963c29db75aa1d978b7d99ce0406e4fbfdac376&"
+},
+
+image:{
+url:"https://cdn.discordapp.com/attachments/1311247446051131453/1478823908294787073/cf62cafc-7119-455e-893f-7d55f5ebcc8f.png?ex=69a9cd96&is=69a87c16&hm=9d958bc82502cf21267be65ce28c3fe1e0a5c60585f4a6dee709387e0dda5f96&"
+},
+
+fields:[
+
+{
+name:"🎮 Player",
+value:player,
+inline:true
+},
+
+{
+name:"🏆 Rank",
+value:"#"+rank,
+inline:true
+},
+
+{
+name:"🔥 Score",
+value:String(score),
+inline:true
+},
+
+{
+name:"💎 Diamonds Collected",
+value:String(diamondsCollected),
+inline:true
+},
+
+{
+name:"⚡ Boost Used",
+value:boostUsed ? "Yes" : "No",
+inline:true
+}
+
+],
+
+footer:{
+text:"Snake Arena Neon"
+},
+
+timestamp:new Date()
+
+}]
+
+})
+
+});
+
+}
+
+showLeaderboard();
+
+</script>
+
+</body>
+</html>
