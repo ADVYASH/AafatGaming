@@ -343,8 +343,17 @@ function goNext(){
 
     if(selectedType==="public"){
         window.location.href="public.html";
-    }else if(selectedType==="creator"){
-        window.location.href="creator.html";
+    }
+
+    if(selectedType==="creator"){
+
+        const clientId = "YOUR_DISCORD_CLIENT_ID"
+        const redirect = "https://YOURDOMAIN/creator.html"
+
+        const discordAuth =
+        `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirect)}&response_type=token&scope=identify`
+
+        window.location.href = discordAuth
     }
 }
 
