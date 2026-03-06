@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aafat Gaming | Creator Application</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:'Orbitron',sans-serif;
+background:radial-gradient(circle at center,#050510,#000);
+color:white;
+display:flex;
+justify-content:center;
+padding:40px;
+}
+
+.container{
+width:700px;
+background:#0b0b18;
+padding:35px;
+border-radius:20px;
+box-shadow:0 0 40px #00f7ff33;
+}
+
+h1{
+text-align:center;
+color:#00f7ff;
+margin-bottom:30px;
+}
+
+label{
+display:block;
+margin-top:15px;
+font-size:14px;
+}
+
+input, textarea, select{
+width:100%;
+padding:10px;
+margin-top:6px;
+border-radius:8px;
+border:none;
+background:#111;
+color:white;
+}
+
+textarea{
+resize:none;
+height:80px;
+}
+
+button{
+margin-top:25px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#00f7ff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+box-shadow:0 0 20px #00f7ff;
+}
+
+.avatar{
+display:flex;
+justify-content:center;
+margin-bottom:10px;
+}
+
+.avatar img{
+width:80px;
+height:80px;
+border-radius:50%;
+box-shadow:0 0 15px #00f7ff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="avatar">
+<img id="avatar">
+</div>
+
+<h1>🎥 Creator Application</h1>
+
+<form id="creatorForm">
+
+<label>Minecraft Username</label>
+<input type="text" id="mc" required>
+
+<label>Real Name (Optional)</label>
+<input type="text" id="real">
+
+<label>Age</label>
+<input type="number" id="age" required>
+
+<label>Country / Timezone</label>
+<input type="text" id="country" required>
+
+<label>Discord Username</label>
+<input type="text" id="discord" readonly>
+
+<hr>
+
+<label>Platform You Stream On</label>
+<select id="platform">
+<option>YouTube</option>
+<option>Twitch</option>
+<option>Kick</option>
+<option>Facebook Gaming</option>
+<option>Other</option>
+</select>
+
+<label>Channel Link</label>
+<input type="text" id="channel" required>
+
+<label>Total Subscribers / Followers</label>
+<input type="number" id="subs" required>
+
+<label>Last 5 Streams / Videos Views</label>
+<input type="number" id="views" required>
+
+<label>How often do you stream?</label>
+<select id="stream">
+<option>Daily</option>
+<option>3-4 Times a Week</option>
+<option>Weekly</option>
+<option>Occasionally</option>
+</select>
+
+<hr>
+
+<label>What type of content do you make?</label>
+<select id="content">
+<option>Minecraft SMP</option>
+<option>Survival</option>
+<option>Roleplay</option>
+<option>PvP</option>
+<option>Variety</option>
+</select>
+
+<label>Have you played on SMP servers before?</label>
+<select id="smp">
+<option>Yes</option>
+<option>No</option>
+</select>
+
+<label>If yes, which servers?</label>
+<input type="text" id="servers">
+
+<hr>
+
+<label>Will you stream or record content on our SMP?</label>
+<select id="promote">
+<option>Yes</option>
+<option>Sometimes</option>
+<option>Not Sure</option>
+</select>
+
+<label>How will you help promote the server?</label>
+<textarea id="promotion"></textarea>
+
+<hr>
+
+<label>Why do you want to join this SMP as a creator?</label>
+<textarea id="why"></textarea>
+
+<label>What makes your content unique?</label>
+<textarea id="unique"></textarea>
+
+<label>
+<input type="checkbox" id="rules">
+ I agree to follow all server rules
+</label>
+
+<button type="submit">Submit Application</button>
+
+</form>
+
+</div>
+
+<script>
+
+/* DISCORD LOGIN */
+
+function getToken(){
+const hash = window.location.hash.substring(1)
+const params = new URLSearchParams(hash)
+return params.get("access_token")
+}
+
+const token = getToken()
+
+let discordUser=""
+let avatarURL=""
+
+if(token){
+
+fetch("https://discord.com/api/users/@me",{
+headers:{Authorization:`Bearer ${token}`}
+})
+.then(res=>res.json())
+.then(user=>{
+
+discordUser=user.username+"#"+user.discriminator
+avatarURL=`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+
+document.getElementById("discord").value=discordUser
+document.getElementById("avatar").src=avatarURL
+
+})
+
+}
+
+/* FORM SUBMIT */
+
+document.getElementById("creatorForm").addEventListener("submit", async(e)=>{
+
+e.preventDefault()
+
+if(!rules.checked){
+alert("You must agree to the rules")
+return
+}
+
+const subs=parseInt(document.getElementById("subs").value)
+const views=parseInt(document.getElementById("views").value)
+
+const applyWebhook="https://discord.com/api/webhooks/1479444958674161767/JG_Ld02lbwdFikrb5cA0mJYccisw0A9J6X8G27jCaeP9pSzr-_mjXR-_0zf_bT11VBAP"
+const resultWebhook="https://discord.com/api/webhooks/1479444869251596289/vGFLNRcVJedPBrj3kiAvTvohyt7NDVVd17ZGh32T9uJxfNHk89ZDZn4nWFLHszUDDg-u"
+
+await fetch(applyWebhook,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+embeds:[{
+title:"🎥 New Creator Application",
+color:3447003,
+thumbnail:{url:avatarURL},
+
+fields:[
+{name:"Minecraft Username",value:mc.value,inline:true},
+{name:"Discord",value:discordUser,inline:true},
+{name:"Real Name",value:real.value || "Not provided"},
+{name:"Age",value:age.value},
+{name:"Country / Timezone",value:country.value},
+
+{name:"Platform",value:platform.value},
+{name:"Channel Link",value:channel.value},
+{name:"Subscribers",value:String(subs)},
+{name:"Last 5 Views",value:String(views)},
+{name:"Streaming Frequency",value:stream.value},
+
+{name:"Content Type",value:content.value},
+{name:"Played SMP Before",value:smp.value},
+{name:"Servers Played",value:servers.value || "None"},
+
+{name:"Will Promote Server",value:promote.value},
+{name:"Promotion Plan",value:promotion.value || "Not provided"},
+
+{name:"Why Join",value:why.value || "Not provided"},
+{name:"Unique Content",value:unique.value || "Not provided"}
+],
+
+footer:{
+text:"Aafat Gaming Creator Application System"
+},
+
+timestamp:new Date()
+}]
+})
+})
+
+/* AUTO ACCEPT OR REJECT */
+
+if(subs>=100 && views>=100){
+
+await fetch(resultWebhook,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+embeds:[{
+title:"✅ Creator Accepted",
+description:`${discordUser} has been accepted as a creator`,
+color:5763719,
+thumbnail:{url:avatarURL},
+
+fields:[
+{name:"Minecraft",value:mc.value,inline:true},
+{name:"Channel",value:channel.value,inline:true},
+{name:"Subscribers",value:String(subs),inline:true},
+{name:"Last 5 Views",value:String(views),inline:true}
+],
+
+image:{
+url:"https://raw.githubusercontent.com/ADVYASH/AafatGaming/main/accept.png"
+}
+}]
+})
+})
+
+alert("You are accepted as a Creator!")
+
+}else{
+
+await fetch(resultWebhook,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+embeds:[{
+title:"❌ Creator Rejected",
+description:`${discordUser} does not meet requirements`,
+color:15548997,
+thumbnail:{url:avatarURL},
+
+fields:[
+{name:"Minecraft",value:mc.value,inline:true},
+{name:"Subscribers",value:String(subs),inline:true},
+{name:"Last 5 Views",value:String(views),inline:true}
+],
+
+image:{
+url:"https://raw.githubusercontent.com/ADVYASH/AafatGaming/main/reject.png"
+}
+}]
+})
+})
+
+alert("Application submitted but requirements not met.")
+
+}
+
+})
+
+</script>
+
+</body>
+</html>
